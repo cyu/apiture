@@ -1,32 +1,34 @@
 module Diesel
   class Authenticator
-    attr_accessor :strategy, :options
+    attr_reader :strategies
 
-    def self.create(type, options = {})
-      strategy = case type
-      when :oauth2
-        require 'diesel/auth/oauth2'
-        Diesel::Auth::OAuth2
-      when :http_header
-        require 'diesel/auth/http_header'
-        Diesel::Auth::HTTPHeader
-      else
-        raise "Unsupported authentication: #{type}"
+    def self.build(authorizations)
+      strategies = authorizations.map do |auth|
+        case auth.type
+        when :oauth2
+          require 'diesel/auth/oauth2'
+          Diesel::Auth::OAuth2.build(auth)
+        when :api_key
+          require 'diesel/auth/api_key'
+          Diesel::Auth::APIKey.build(auth)
+        else
+          raise "Unsupported authentication: #{auth.type}"
+        end
       end
 
-      new(strategy, options)
+      new(strategies)
     end
 
-    def initialize(strategy, options)
-      @strategy, @options = strategy, options
+    def initialize(strategies)
+      @strategies = strategies
     end
 
-    def activate(api)
-      @strategy.activate(api, options)
+    def activate(api_class)
+      @strategies.each { |s| s.activate(api_class) }
     end
 
-    def create_strategy(api)
-      @strategy.new(api, options)
+    def apply_filter(request, context)
+      @strategies.each { |s| s.apply_filter(request, context) }
     end
   end
 end

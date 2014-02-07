@@ -1,7 +1,4 @@
-require 'diesel/profile/api'
-require 'diesel/profile/attribute'
-require 'diesel/profile/endpoint'
-require 'diesel/profile/action/json_body'
+require 'diesel/profile'
 require 'diesel/endpoint'
 require 'diesel/request_context'
 
@@ -16,8 +13,28 @@ module Diesel
     class LoaderBase
       attr_reader :object
 
-      def description(desc)
-        @object.description = desc
+      class << self
+        def attribute(name)
+          define_method(name) do |val|
+            @object.__send__("#{name}=".to_sym, val)
+          end
+        end
+      end
+
+      attribute :description
+    end
+
+    module Parameters
+      def header(*args, &block)
+        ParameterLoader.load_parameters(@object, :header, *args, &block)
+      end
+
+      def body(*args, &block)
+        ParameterLoader.load_parameters(@object, :body, *args, &block)
+      end
+
+      def parameter(*args, &block)
+        ParameterLoader.load_parameters(@object, nil, *args, &block)
       end
     end
 
@@ -65,66 +82,139 @@ module Diesel
     #  end
     #end
 
-    class JSONPostBodyLoader < LoaderBase
-      attr_accessor :values
+    class AuthorizationLoader < LoaderBase
+      attribute :name
+      attribute :nickname
+      attribute :pass_as
+      attribute :type
 
       def initialize
-        @object = Diesel::Profile::Action::JSONBody.new(:post)
-      end
-
-      def value(name)
-        @object.values << name
+        @object = Diesel::Profile::Authorization.new
       end
     end
 
-    class PostActionLoader < LoaderBase
-      def json(&block)
-        @object = (JSONPostBodyLoader.new.tap { |l| l.instance_eval(&block) }).object
+    class PropertyLoader < LoaderBase
+      attribute :name
+
+      def initialize
+        @object = Diesel::Profile::Property.new
+      end
+
+      def enum(*values)
+        @object.enum = values
       end
     end
 
-    class EndpointLoader < LoaderBase
-      def initialize(name, path)
-        @object = Diesel::Profile::Endpoint.new(name, path)
+    class ComplexTypeLoader < LoaderBase
+      attribute :name
+
+      def initialize
+        @object = Diesel::Profile::ComplexType.new
       end
 
-      def attribute name, options = {}
-        @object.attributes << Diesel::Profile::Attribute.new(name, options)
+      def required(*required_properties)
+        @object.required = required_properties
       end
 
-      def post &block
-        @object.action = (PostActionLoader.new.tap do |l|
-          l.instance_eval(&block)
-        end).object
+      def property(name, &block)
+        l = PropertyLoader.new
+        l.name(name)
+        l.instance_eval(&block) if block
+        @object.properties << l.object
+      end
+    end
+
+    class OperationLoader < LoaderBase
+      include Parameters
+
+      attribute :nickname
+      attribute :reference_url
+      attribute :method
+
+      def initialize
+        @object = Diesel::Profile::Operation.new
+      end
+    end
+
+    class ResourceLoader < LoaderBase
+      def initialize(path)
+        @object = Diesel::Profile::Resource.new(path)
+      end
+
+      def operation(nickname, &block)
+        l = OperationLoader.new
+        l.nickname(nickname)
+        l.instance_eval(&block)
+        @object.operations << l.object
+      end
+    end
+
+    class ParameterLoader < LoaderBase
+      attribute :param_type
+      attribute :name
+      attribute :value
+      attribute :required
+      attribute :data_type
+
+      def initialize
+        @object = Diesel::Profile::Parameter.new
+      end
+
+      def self.load_parameters(target, param_type, *args, &block)
+        if args.first.is_a?(::Hash)
+          args.shift.each_pair do |name, value|
+            l = new
+            l.param_type(param_type)
+            l.name(name)
+            l.value(value)
+            target.parameters << l.object
+          end
+        else
+          l = new
+          l.param_type(param_type)
+          l.name(args.first)
+          l.instance_eval(&block) if block
+          target.parameters << l.object
+        end
       end
     end
 
     class APILoader < LoaderBase
+      include Parameters
+
+      attribute :api_version
+      attribute :base_path
+
       def initialize(api_profile)
         @object = api_profile
       end
 
-      def base_uri(base_uri)
-        @object.base_uri = base_uri
-      end
-
-      def request_headers(headers)
-        @object.request_headers = headers
-      end
-
-      def attribute(name, options = {})
-        @object.attributes << Diesel::Profile::Attribute.new(name, options)
-      end
-
-      def endpoint(name, path, &block)
-        l = EndpointLoader.new(name, path)
+      def resource(path, &block)
+        l = ResourceLoader.new(path)
         l.instance_eval(&block)
-        @object.endpoints << l.object
+        @object.resources << l.object
       end
 
-      def auth(auth_type, options = {})
-        @object.auth_type = auth_type
-        @object.auth_options = options
+      def complex_type(name, &block)
+        l = ComplexTypeLoader.new
+        l.name(name)
+        l.instance_eval(&block)
+        @object.models << l.object
+      end
+
+      def container_type(name, &block)
+        l = ContainerTypeLoader.new
+        l.name(name)
+        l.instance_eval(&block)
+        @object.models << l.object
+      end
+
+      def api_key(name, &block)
+        l = AuthorizationLoader.new
+        l.name(name)
+        l.type(:api_key)
+        l.instance_eval(&block)
+        @object.authorizations << l.object
       end
     end
 
@@ -136,11 +226,10 @@ module Diesel
         @name = name
       end
 
-      def api(&block)
+      def apis(&block)
         @profile = Profile::API.new(name)
         APILoader.new(@profile).instance_eval(&block)
       end
     end
-
  end
 end

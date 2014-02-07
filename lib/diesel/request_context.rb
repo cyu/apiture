@@ -11,25 +11,16 @@ module Diesel
     end
 
     def get_attribute(name)
-      name = name.intern
-      attributes[name] || endpoint.attributes[name][:default]
+      name = name.to_sym
+      attributes[name]
     end
 
     def endpoint_url
-      url = api.class.base_uri.dup
+      url = api.class.base_path.dup
       url << "/" unless url =~ /\/$/
-      endpoint_path = endpoint.evaluated_path(self)
+      endpoint_path = endpoint.path
       url << (endpoint_path =~ /^\// ? endpoint_path[1..-1] : endpoint_path)
       url
-    end
-
-    def http_options
-      Hash.new.tap do |h|
-        h[:headers] = api.class.request_headers.dup
-        if api.auth_strategy
-          api.auth_strategy.set_http_options(self, h)
-        end
-      end
     end
 
     def perform

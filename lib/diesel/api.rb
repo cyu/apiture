@@ -1,16 +1,16 @@
 module Diesel
   class API
-    attr_accessor :auth_strategy
     attr_accessor :logger
 
-    def self.inherited(subclass)
-      subclass.send(:extend, ClassMethods)
-    end
+    class << self
+      def base_path; @base_path; end
+      def base_path=(base_path)
+        @base_path = base_path
+      end
 
-    module ClassMethods
-      def base_uri; @base_uri; end
-      def base_uri=(uri)
-        @base_uri = uri
+      def endpoints; @endpoints ||= []; end
+      def endpoints=(endpoints)
+        @endpoints = endpoints
       end
 
       def authenticator; @authenticator; end
@@ -18,12 +18,16 @@ module Diesel
         @authenticator = auth
         @authenticator.activate(self)
       end
-    end
 
-    def initialize
-      if self.class.authenticator
-        @auth_strategy = self.class.authenticator.create_strategy(self)
+      def models; @models ||= {}; end
+      def models=(models)
+        @models = models
       end
     end
+
+    protected
+      def execute(endpoint, options)
+        RequestContext.new(self, endpoint, options).perform
+      end
   end
 end
