@@ -1,3 +1,4 @@
+require "diesel/version"
 require 'diesel/dsl'
 require 'diesel/api_builder'
 
