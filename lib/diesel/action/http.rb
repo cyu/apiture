@@ -17,7 +17,7 @@ module Diesel
 
         if context.logger && context.logger.debug?
           context.logger.debug("Request Method: #{request_method}")
-          context.logger.debug("URL: #{context.endpoint_url}")
+          context.logger.debug("URL: #{req.url}")
           context.logger.debug("Options: #{req.http_options.inspect}")
         end
 
