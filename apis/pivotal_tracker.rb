@@ -19,11 +19,12 @@ apis do
 
       parameter "project_id" do
         param_type :path
-        required true
+        required
       end
 
       body "story" do
         data_type "NewStory"
+        required
       end
     end
   end

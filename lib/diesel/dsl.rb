@@ -160,6 +160,10 @@ module Diesel
         @object = Diesel::Profile::Parameter.new
       end
 
+      def required(required = true)
+        @object.required = required
+      end
+
       def self.load_parameters(target, param_type, *args, &block)
         if args.first.is_a?(::Hash)
           args.shift.each_pair do |name, value|
