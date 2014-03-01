@@ -24,6 +24,8 @@ module Diesel
       def apply_filter(request, context)
         if pass_as.to_sym == :header
           request.headers[name] = context.api.auth_http_headers[name]
+        elsif pass_as.to_sym == :query_parameter
+          request.add_query_parameter(name, context.api.auth_http_headers[name])
         end
       end
 

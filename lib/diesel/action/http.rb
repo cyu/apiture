@@ -42,6 +42,14 @@ module Diesel
         def http_options
           {headers: headers, query: query, body: body}
         end
+
+        def add_query_parameter(name, value)
+          @url = if url.index('?')
+            "#{url}&#{URI.escape(name)}=#{URI.escape(value)}"
+          else
+            "#{url}?#{URI.escape(name)}=#{URI.escape(value)}"
+          end
+        end
       end
 
       class ParameterFilter
