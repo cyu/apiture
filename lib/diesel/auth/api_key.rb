@@ -1,21 +1,24 @@
+require 'diesel/inflections'
 require 'diesel/auth/base'
 
 module Diesel
   module Auth
     class APIKey < Base
+      include Inflections
+
       attr_accessor :nickname, :pass_as, :name
 
-      def self.build(authorization)
+      def self.build(nickname, authorization)
         auth = new
-        auth.name     = authorization.name
-        auth.nickname = authorization.nickname
+        auth.name     = authorization.keyname
+        auth.nickname = nickname
         auth.pass_as  = authorization.pass_as
         auth
       end
 
       def activate(api_class)
         header_name = name
-        api_class.__send__(:define_method, "#{nickname}=".to_sym) do |header_value|
+        api_class.__send__(:define_method, "#{underscore(nickname)}=".to_sym) do |header_value|
             (@_auth_http_headers ||= {})[header_name] = header_value
           end
         api_class.send(:include, InstanceMethods)

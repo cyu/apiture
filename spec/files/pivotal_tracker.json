@@ -1,0 +1,84 @@
+{
+  "description": "PivotalTracker API v5",
+  "apiVersion": "5",
+  "basePath": "https://www.pivotaltracker.com/services/v5",
+
+  "authorizations": {
+    "apiToken": {
+      "type": "apiKey",
+      "passAs": "header",
+      "keyname": "X-TrackerToken"
+    }
+  },
+
+  "produces": ["application/json"],
+
+  "apis": [
+    {
+      "path": "projects/{projectId}/stories",
+      "description": "Operations on stories",
+      "operations": [
+        {
+          "method": "post",
+          "nickname": "createStory",
+          "referenceUrl": "https://www.pivotaltracker.com/help/api/rest/v5#projects_project_id_stories_post",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "projectId",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "paramType": "body",
+              "name": "body",
+              "required": true,
+              "type": "NewStory"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "models": {
+    "NewStory": {
+      "id": "NewStory",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "cl_numbers": { "type": "string" },
+
+        "current_state": {
+          "type": "string",
+          "enum": [
+            "accepted",
+            "delivered",
+            "finished",
+            "started",
+            "rejected",
+            "unstarted",
+            "unscheduled"
+          ]
+        },
+        "external_id": { "type": "string" },
+        "deadline": { "type": "string" },
+        "description": { "type": "string" },
+        "estimate": { "type": "string" },
+        "integration_id": { "type": "string" },
+        "planned_iteration_number": { "type": "string" },
+        "requested_by_id": { "type": "string" },
+        "accepted_at": { "type": "string" },
+        "before_id": { "type": "string" },
+        "created_at": { "type": "string" },
+        "after_id": { "type": "string" },
+        "name": { "type": "string" },
+        "story_type": {
+          "type": "string",
+          "enum": [ "feature", "bug", "chore", "release" ]
+        }
+      }
+    }
+  }
+}

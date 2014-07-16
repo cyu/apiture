@@ -3,14 +3,14 @@ module Diesel
     attr_reader :strategies
 
     def self.build(authorizations)
-      strategies = authorizations.map do |auth|
+      strategies = authorizations.map do |name, auth|
         case auth.type
-        when :oauth2
+        when 'oauth2'
           require 'diesel/auth/oauth2'
-          Diesel::Auth::OAuth2.build(auth)
-        when :api_key
+          Diesel::Auth::OAuth2.build(name, auth)
+        when 'apiKey'
           require 'diesel/auth/api_key'
-          Diesel::Auth::APIKey.build(auth)
+          Diesel::Auth::APIKey.build(name, auth)
         else
           raise "Unsupported authentication: #{auth.type}"
         end
@@ -32,4 +32,3 @@ module Diesel
     end
   end
 end
-

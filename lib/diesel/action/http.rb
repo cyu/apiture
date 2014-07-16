@@ -1,9 +1,11 @@
+require 'diesel/model_builder'
+require 'diesel/api_error'
 require 'httparty'
 
 module Diesel
   module Action
     class HTTP
-      attr_accessor :filters, :request_method
+      attr_accessor :filters, :request_method, :content_type
 
       def filters
         @filters ||= []
@@ -11,6 +13,11 @@ module Diesel
 
       def perform(context)
         req = Request.new(request_method, context.endpoint_url)
+
+        if content_type
+          req.headers['Content-Type'] = content_type
+        end
+
         [context.api.class.authenticator].concat(filters).each do |filter|
           filter.apply_filter(req, context)
         end
@@ -31,7 +38,7 @@ module Diesel
         def initialize(method, url)
           @method = method
           @url = url
-          @headers = {} 
+          @headers = {}
           @query = {}
         end
 
@@ -74,11 +81,12 @@ module Diesel
         end
 
         def find_parameter_value(context)
-          if parameter.complex?
-            model = context.api.class.models[parameter.data_type]
+          if parameter.model?
+            model = context.api.class.models[parameter.type]
+            raise APIError, "Unspecified model: #{parameter.type}" unless model
             model.build(parameter, context)
           else
-            parameter.value || context.get_attribute(parameter.name)
+            context.get_attribute(parameter.name)
           end
         end
 

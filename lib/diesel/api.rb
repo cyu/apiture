@@ -1,3 +1,5 @@
+require 'diesel/request_context'
+
 module Diesel
   class API
     attr_accessor :logger

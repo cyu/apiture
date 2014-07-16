@@ -1,5 +1,9 @@
+require 'diesel/inflections'
+
 module Diesel
   class RequestContext
+    include Inflections
+
     attr_reader :api, :endpoint, :attributes
 
     def initialize(api, endpoint, attributes)
@@ -12,6 +16,9 @@ module Diesel
 
     def get_attribute(name)
       name = name.to_sym
+      unless attributes.has_key?(name)
+        name = underscore(name).to_sym
+      end
       attributes[name]
     end
 
