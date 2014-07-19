@@ -9,6 +9,7 @@ module Diesel
       attribute :api_version
       attribute :base_path
       attribute :resource_path
+      attribute :info, validate: true
 
       list :apis, validate: true
       list :produces

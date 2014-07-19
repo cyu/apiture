@@ -7,6 +7,7 @@ require 'diesel/swagger/operation'
 require 'diesel/swagger/parameter'
 require 'diesel/swagger/model'
 require 'diesel/swagger/property'
+require 'diesel/swagger/info'
 
 module Diesel
   class JSONParser
@@ -23,6 +24,7 @@ module Diesel
 
     def load_declaration(json)
       declaration = build_node(Diesel::Swagger::APIDeclaration, json)
+      declaration.info = build_node(Diesel::Swagger::Info, json['info'])
       declaration.authorizations = build_node_hash(Diesel::Swagger::Authorization, json, 'authorizations')
       declaration.produces = json['produces'] || []
       declaration.apis = build_node_list(Diesel::Swagger::API, json, 'apis') do |api, api_json|

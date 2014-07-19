@@ -36,13 +36,13 @@ describe Diesel::JSONParser do
 
     param1 = op.parameters[0]
     expect(param1).to_not be_nil
-    expect(param1.param_type).to eq "path"
+    expect(param1.param_type).to eq :path
     expect(param1.name).to eq "projectId"
     expect(param1).to be_required
 
     param2 = op.parameters[1]
     expect(param2).to_not be_nil
-    expect(param2.param_type).to eq "body"
+    expect(param2.param_type).to eq :body
     expect(param2.name).to eq "body"
     expect(param2).to be_required
     expect(param2.type).to eq "NewStory"
