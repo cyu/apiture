@@ -9,7 +9,6 @@ module Diesel
       attribute :api_version
       attribute :base_path
       attribute :resource_path
-      attribute :info, validate: true
 
       list :apis, validate: true
       list :produces
@@ -17,6 +16,9 @@ module Diesel
 
       hash :models, validate: true
       hash :authorizations, validate: true
+
+      # non-standard attributes
+      attribute :info, validate: true
     end
   end
 end

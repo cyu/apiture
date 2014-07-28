@@ -11,6 +11,8 @@ module Diesel
       attribute :license
       attribute :license_url
 
+      # non-standard attributes
+      attribute :url
     end
   end
 end
