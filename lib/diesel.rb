@@ -1,20 +1,18 @@
 require 'diesel/version'
-require 'diesel/json_parser'
+require 'diesel/swagger/parser'
 require 'diesel/api_builder'
-# require 'diesel/dsl'
+
 
 module Diesel
-  def self.parse_json(path)
-    Diesel::JSONParser.new.parse_file(path)
+  def self.parse_specification(path)
+    Diesel::Swagger::Parser.new.parse(File.read(path))
   end
 
-  def self.build_api(api_declaration)
-    Diesel::APIBuilder.new(api_declaration).build
+  def self.build_api(specification)
+    Diesel::APIBuilder.new(specification).build
   end
 
   def self.load_api(path)
-    build_api(parse_json(path))
-    # profile = DSL.load_profile(name, "#{name}.rb")
-    # Diesel::APIBuilder.new(profile).build
+    build_api(parse_specification(path))
   end
 end

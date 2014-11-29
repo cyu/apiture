@@ -1,11 +1,11 @@
 require 'diesel/swagger/node'
+require 'diesel/swagger/property'
 
 module Diesel
   module Swagger
-    class Model < Node
-      attribute :id
-      attribute :description
+    class Definition < Node
       attribute :required
+      attribute :discriminator
       hash :properties
     end
   end

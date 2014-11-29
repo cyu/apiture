@@ -1,43 +1,25 @@
+require 'diesel/middleware_builder'
+require 'diesel/middleware_stack'
+
 module Diesel
   class Endpoint
-    attr_reader :path
-    attr_accessor :action
+    attr_reader :name, :url, :request_method
 
-    def initialize(path)
-      @path = path
+    def initialize(name, url, request_method)
+      @name, @url, @request_method = name, url, request_method
     end
 
-    def perform(context)
-      raise 'action required for endpoint' unless action
-
-      assert_attributes(context)
-
-      #unless action.accept? context
-      #  raise 'endpoint does not support this context'
-      #end
-
-      action.perform(context)
+    def middlewares
+      @middlewares ||= []
     end
 
-    private
-      def assert_attributes(context)
-        #if attributes.nil?
-        #  unless context.attributes.empty?
-        #    raise ArgumentError, "invalid attributes #{atts.keys.join(', ')}"
-        #  end
-        #  return
-        #end
+    def middleware_stack
+      @middleware_stack ||= MiddlewareStack.new(middlewares)
+    end
 
-        #invalid_atts = context.attributes.keys.map!(&:intern) - attributes.keys
-        #unless invalid_atts.empty?
-        #  raise ArgumentError, "invalid attributes #{invalid_atts.join(', ')}"
-        #end
-
-        #attributes.each do |attr_name, options|
-        #  if options[:required] and context.attributes[attr_name].nil?
-        #    raise ArgumentError, "require attribute: #{attr_name}"
-        #  end
-        #end
-      end
+    def config_middleware(&block)
+      builder = MiddlewareBuilder.new(middlewares)
+      builder.build(&block)
+    end
   end
 end

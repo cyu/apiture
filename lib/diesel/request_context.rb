@@ -1,17 +1,39 @@
-require 'diesel/inflections'
+require 'httparty'
+require 'diesel/utils/inflections'
 
 module Diesel
   class RequestContext
-    include Inflections
+    include Diesel::Utils::Inflections
 
-    attr_reader :api, :endpoint, :attributes
+    attr_reader :options, :group, :endpoint, :attributes
 
-    def initialize(api, endpoint, attributes)
-      @api, @endpoint, @attributes = api, endpoint, attributes
+    def initialize(options, group, endpoint, attributes)
+      @options, @group, @endpoint, @attributes = options, group, endpoint, attributes
+    end
+
+    def perform
+      env = {
+        method: endpoint.request_method,
+        url: endpoint.url,
+        params: {},
+        request_headers: {},
+        logger: logger,
+        context: self
+      }
+      endpoint.middleware_stack.call(env)
+      perform_request(env)
+    end
+
+    def authenticator
+      group.authenticator
+    end
+
+    def endpoint_url
+      endpoint.url
     end
 
     def logger
-      api.logger
+      group.logger
     end
 
     def get_attribute(name)
@@ -22,16 +44,12 @@ module Diesel
       attributes[name]
     end
 
-    def endpoint_url
-      url = api.class.base_path.dup
-      url << "/" unless url =~ /\/$/
-      endpoint_path = endpoint.path
-      url << (endpoint_path =~ /^\// ? endpoint_path[1..-1] : endpoint_path)
-      url
-    end
-
-    def perform
-      endpoint.perform(self)
-    end
+    protected
+      def perform_request(env)
+        HTTParty.send(env[:method], env[:url],
+                      headers: env[:request_headers],
+                      query: env[:params],
+                      body: env[:body])
+      end
   end
 end

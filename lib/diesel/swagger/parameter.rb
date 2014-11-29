@@ -1,41 +1,29 @@
-require 'diesel/swagger/node'
+require 'diesel/swagger/data_type_field'
 
 module Diesel
   module Swagger
-    class Parameter < Node
-      PRIMITIVE_TYPES = %w(
-        integer
+    class Parameter < DataTypeField
+      VALID_TYPES = %w(
         string
         number
+        integer
         boolean
+        array
+        file
       )
 
-      attribute :param_type, symbolize: true
       attribute :name
+      attribute :in, symbolize: true
+      attribute :description
       attribute :required, type: :boolean
-      attribute :type
-      attribute :format
+      attribute :schema
 
-      def primitive?
-        PRIMITIVE_TYPES.include?(type)
-      end
-
-      def array?
-        type == 'array'
-      end
-
-      def model?
-        !primitive? && !array?
+      def schema?
+        !!schema
       end
 
       def validate
-        errors << "Type is required for parameter '#{name}'" if type.nil?
-
-        if param_type == :body && name != "body"
-          errors << "Body parameter must have the name of 'body'"
-        end
-
-        if param_type == :path && !required?
+        if type == :path && !required?
           errors << "Path parameters must be defined as required"
         end
       end

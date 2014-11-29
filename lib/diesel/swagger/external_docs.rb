@@ -2,10 +2,9 @@ require 'diesel/swagger/node'
 
 module Diesel
   module Swagger
-    class API < Node
-      attribute :path
+    class ExternalDocs < Node
       attribute :description
-      list :operations, validate: true
+      attribute :url
     end
   end
 end

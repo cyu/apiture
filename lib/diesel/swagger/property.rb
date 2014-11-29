@@ -1,10 +1,8 @@
-require 'diesel/swagger/node'
+require 'diesel/swagger/data_type_field'
 
 module Diesel
   module Swagger
-    class Property < Node
-      attribute :type
-      attribute :enum
+    class Property < DataTypeField
     end
   end
 end
