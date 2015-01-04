@@ -1,0 +1,98 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.honeybadger.io/v1/projects/3167/faults?auth_token=afaketoken
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Sun, 04 Jan 2015 05:41:06 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Vary:
+      - Accept-Encoding
+      Status:
+      - 200 OK
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Set-Cookie:
+      - _honeybadger_session=BAh7BkkiD3Nlc3Npb25faWQGOgZFVEkiJTM4ZDllNDdiMDY3Njk4NmZkMDcwYzhjNjQ2OWMwMzIzBjsAVA%3D%3D--124cf4e6729ee5f15da2588ec9283da5e170c2b4;
+        path=/; secure; HttpOnly
+      X-Request-Id:
+      - cbc296dc-05aa-4d76-a372-eb9a1e94239a
+      X-Runtime:
+      - '2.092752'
+    body:
+      encoding: UTF-8
+      string: '{"results":[{"project_id":3167,"klass":"HoneybadgerTestingException","component":"application","action":"verify","environment":"development","resolved":true,"ignored":false,"created_at":"2013-10-02T14:23:21.116Z","comments_count":1,"message":"Testing
+        honeybadger via \"rake honeybadger:test\". If you can see this, it works.","notices_count":1,"last_notice_at":"2013-10-02T14:23:21.101Z","tags":[],"id":1563097,"assignee":null},{"project_id":3167,"klass":"NoMethodError","component":"portal","action":"show","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-02T19:54:43.127Z","comments_count":0,"message":"undefined
+        method `deals'' for nil:NilClass","notices_count":34,"last_notice_at":"2013-10-07T13:54:49.614Z","tags":[],"id":1569973,"assignee":null},{"project_id":3167,"klass":"NoMethodError","component":"admin/deals","action":"index","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-03T20:56:00.529Z","comments_count":0,"message":"undefined
+        method `name'' for nil:NilClass","notices_count":2,"last_notice_at":"2014-06-05T20:26:05.385Z","tags":[],"id":1590813,"assignee":null},{"project_id":3167,"klass":"Foursquare2::APIError","component":"admin/deals","action":"show","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-04T20:07:40.087Z","comments_count":0,"message":"other:
+        Must provide parameter venueId (400)","notices_count":50,"last_notice_at":"2014-11-18T19:00:35.983Z","tags":[],"id":1608448,"assignee":null},{"project_id":3167,"klass":"MultiJson::DecodeError","component":"admin/deals","action":"show","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-04T20:08:43.640Z","comments_count":0,"message":"757:
+        unexpected token at ''\u003c?xml version=\"1.0\" encoding=\"utf-8\"?\u003e\n\u003c!DOCTYPE
+        html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"\u003e\n\u003chtml\u003e\n  \u003chead\u003e\n    \u003ctitle\u003e503
+        No healthy backends\u003c/title\u003e\n  \u003c/head\u003e\n  \u003cbody\u003e\n    \u003ch1\u003eError
+        503 No healthy backends\u003c/h1\u003e\n    \u003cp\u003eNo healthy backends\u003c/p\u003e\n    \u003ch3\u003eGuru
+        Meditation:\u003c/h3\u003e\n    \u003cp\u003eXID: 2595686802\u003c/p\u003e\n    \u003chr\u003e\n    \u003cp\u003eVarnish
+        cache server\u003c/p\u003e\n  \u003c/body\u003e\n\u003c/html\u003e\n''","notices_count":2,"last_notice_at":"2013-10-04T20:08:44.290Z","tags":[],"id":1608469,"assignee":null},{"project_id":3167,"klass":"NameError","component":null,"action":null,"environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-06T15:10:39.295Z","comments_count":0,"message":"uninitialized
+        constant Jobs::CheckForUngeocodedDeals","notices_count":1,"last_notice_at":"2013-10-06T15:10:39.282Z","tags":[],"id":1628541,"assignee":null},{"project_id":3167,"klass":"NoMethodError","component":null,"action":null,"environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-07T10:30:21.831Z","comments_count":0,"message":"undefined
+        method `perform'' for Jobs::CheckForUngeocodedDeals:Class","notices_count":1,"last_notice_at":"2013-10-07T10:30:21.820Z","tags":[],"id":1637349,"assignee":null},{"project_id":3167,"klass":"ActiveRecord::StatementInvalid","component":"admin/deals","action":"index","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-07T14:02:01.586Z","comments_count":0,"message":"Mysql2::Error:
+        Lost connection to MySQL server during query: SELECT  `locations`.* FROM `locations`  WHERE
+        `locations`.`id` = 3596 LIMIT 1","notices_count":4,"last_notice_at":"2013-11-26T14:29:56.279Z","tags":[],"id":1639607,"assignee":null},{"project_id":3167,"klass":"ActiveRecord::StatementInvalid","component":"admin/reservations","action":"geo","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-07T19:37:50.792Z","comments_count":0,"message":"Mysql2::Error:
+        Lost connection to MySQL server during query: SELECT  `cities`.* FROM `cities`  WHERE
+        `cities`.`id` = 1 LIMIT 1","notices_count":32,"last_notice_at":"2014-04-15T19:28:38.959Z","tags":[],"id":1645856,"assignee":null},{"project_id":3167,"klass":"ActiveRecord::StatementInvalid","component":"admin/reservations","action":"geo","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-07T20:28:39.553Z","comments_count":0,"message":"Mysql2::Error:
+        Lost connection to MySQL server during query: SELECT  `users`.* FROM `users`  WHERE
+        `users`.`id` = 370064 LIMIT 1","notices_count":36,"last_notice_at":"2014-04-15T19:26:51.343Z","tags":[],"id":1646919,"assignee":null},{"project_id":3167,"klass":"NoMethodError","component":"admin/daily_content","action":"show_email","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-08T21:39:49.184Z","comments_count":0,"message":"undefined
+        method `name'' for nil:NilClass","notices_count":1,"last_notice_at":"2013-10-08T21:39:49.165Z","tags":[],"id":1668099,"assignee":null},{"project_id":3167,"klass":"ActiveRecord::StatementInvalid","component":"portal","action":"show","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-11T12:46:45.533Z","comments_count":0,"message":"NoMethodError:
+        undefined method `fields'' for nil:NilClass: SELECT  `ratings`.* FROM `ratings`  WHERE
+        `ratings`.`location_id` = 3038 AND (ratings.comments IS NOT NULL AND LENGTH(ratings.comments)
+        \u003e 4) ORDER BY ratings.created_at DESC LIMIT 5","notices_count":7,"last_notice_at":"2014-05-05T14:27:59.503Z","tags":[],"id":1713397,"assignee":null},{"project_id":3167,"klass":"ActiveRecord::StatementInvalid","component":"admin/locations","action":"index","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-11T20:42:51.804Z","comments_count":0,"message":"Mysql2::Error:
+        Lost connection to MySQL server during query: SELECT  `cities`.* FROM `cities`  WHERE
+        `cities`.`id` = 1 LIMIT 1","notices_count":5,"last_notice_at":"2014-05-06T16:08:05.787Z","tags":[],"id":1720931,"assignee":null},{"project_id":3167,"klass":"NoMethodError","component":"portal","action":"show","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-11T21:13:22.149Z","comments_count":0,"message":"undefined
+        method `deal_extension'' for nil:NilClass","notices_count":2,"last_notice_at":"2013-10-11T21:13:28.380Z","tags":[],"id":1721320,"assignee":null},{"project_id":3167,"klass":"ActiveRecord::StatementInvalid","component":"admin/deals","action":"show","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-16T14:40:09.434Z","comments_count":0,"message":"Mysql2::Error:
+        Lost connection to MySQL server during query: SELECT COUNT(*) FROM `claims`  WHERE
+        `claims`.`deal_id` = 1808 AND `claims`.`type` = ''EmailClaim'' AND (error
+        = ''false'' OR error IS NULL)","notices_count":1,"last_notice_at":"2013-10-16T14:40:09.400Z","tags":[],"id":1819734,"assignee":null},{"project_id":3167,"klass":"NoMethodError","component":"admin/articles","action":"new","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-18T20:50:02.451Z","comments_count":0,"message":"undefined
+        method `[]'' for nil:NilClass","notices_count":1,"last_notice_at":"2013-10-18T20:50:02.378Z","tags":[],"id":1875098,"assignee":null},{"project_id":3167,"klass":"ActiveRecord::StatementInvalid","component":"admin/locations","action":"index","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-23T17:48:22.037Z","comments_count":0,"message":"Mysql2::Error:
+        Lost connection to MySQL server during query: SELECT  `locations`.* FROM `locations`  WHERE
+        `locations`.`id` = 2916 LIMIT 1","notices_count":3,"last_notice_at":"2013-12-13T16:09:42.419Z","tags":[],"id":1947856,"assignee":null},{"project_id":3167,"klass":"ActiveRecord::StatementInvalid","component":"admin/daily_content","action":"edit","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-24T19:26:27.647Z","comments_count":0,"message":"Mysql2::Error:
+        MySQL server has gone away: SELECT COUNT(*) FROM `daily_content`  WHERE `daily_content`.`page_type`
+        = ''Shoppe National Email''","notices_count":6,"last_notice_at":"2014-05-15T14:54:52.126Z","tags":[],"id":1966829,"assignee":null},{"project_id":3167,"klass":"ActiveRecord::StatementInvalid","component":"admin/daily_content","action":"content_options","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-24T20:41:17.983Z","comments_count":0,"message":"Mysql2::Error:
+        Lost connection to MySQL server during query: SELECT  `shoppe_products`.*
+        FROM `shoppe_products`  WHERE (deleted_at IS NULL AND (available_on IS NOT
+        NULL AND CAST(available_on AS DATE) \u003c= ''2013-12-05'') AND (available_until
+        IS NULL OR CAST(available_until AS DATE) \u003e= ''2013-12-05'')) AND (shoppe_artist_id
+        IS NOT NULL) AND (name LIKE ''%%'') ORDER BY available_on DESC LIMIT 100","notices_count":2,"last_notice_at":"2013-12-04T14:26:59.451Z","tags":[],"id":1968249,"assignee":null},{"project_id":3167,"klass":"ActiveRecord::StatementInvalid","component":"admin/daily_content","action":"edit","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-26T02:11:13.946Z","comments_count":0,"message":"Mysql2::Error:
+        Lost connection to MySQL server during query: SELECT `cities`.* FROM `cities`","notices_count":1,"last_notice_at":"2013-10-26T02:11:13.905Z","tags":[],"id":1986521,"assignee":null},{"project_id":3167,"klass":"ActiveRecord::StatementInvalid","component":"admin/deals","action":"index","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-26T02:11:17.186Z","comments_count":0,"message":"Mysql2::Error:
+        Lost connection to MySQL server during query: SELECT  `cities`.* FROM `cities`  WHERE
+        `cities`.`id` = 13 LIMIT 1","notices_count":2,"last_notice_at":"2014-01-31T21:51:13.248Z","tags":[],"id":1986531,"assignee":null},{"project_id":3167,"klass":"ActiveRecord::StatementInvalid","component":"admin/daily_content","action":"content_options","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-28T16:15:54.380Z","comments_count":0,"message":"Mysql2::Error:
+        MySQL server has gone away: SHOW TABLES","notices_count":3,"last_notice_at":"2014-05-27T16:52:17.111Z","tags":[],"id":2018760,"assignee":null},{"project_id":3167,"klass":"ActiveRecord::StatementInvalid","component":"admin/daily_content","action":"content_options","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-28T16:15:54.431Z","comments_count":0,"message":"Mysql2::Error:
+        Lost connection to MySQL server during query: SELECT `cities`.* FROM `cities`  WHERE
+        `cities`.`id` IN (5, 9, 11, 1, 6, 12, 14, 4, 2, 10, 17, 19, 7, 3, 8)","notices_count":1,"last_notice_at":"2013-10-28T16:15:54.317Z","tags":[],"id":2018761,"assignee":null},{"project_id":3167,"klass":"ActiveRecord::StatementInvalid","component":"admin/deals","action":"index","environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-29T20:17:08.404Z","comments_count":0,"message":"NoMethodError:
+        undefined method `fields'' for nil:NilClass: SELECT COUNT(*) FROM `deals`  WHERE
+        `deals`.`privileges_count` = 0 AND `deals`.`visible` = 0","notices_count":6,"last_notice_at":"2014-04-29T18:41:53.327Z","tags":[],"id":2040164,"assignee":null},{"project_id":3167,"klass":"ArgumentError","component":null,"action":null,"environment":"production","resolved":true,"ignored":false,"created_at":"2013-10-29T22:06:52.826Z","comments_count":0,"message":"invalid
+        %-encoding (Vincent%2C%20we%20are%20excited%20to%20re-feature%20Vinny%u2019s%20New%20York%20Pizza%20%26%20Italian%20Grill%20for%20a%203%20month%20run.%20%0A%0APlease%20review%20the%20reservation%20form%20for%20accuracy.%20Once%20done%2C%20sign%20electronically%20with%20your%20mouse%20and%20click%20%27submit%27.%20%0A%0AWe%20will%20launch%20your%20new%20feature%20on%20Sunday%2C%20August%2010th.%20%0A%0AThanks%21)","notices_count":8,"last_notice_at":"2014-07-28T21:39:56.859Z","tags":[],"id":2042146,"assignee":null}],"total_count":158,"current_page":1,"num_pages":7}'
+    http_version:
+  recorded_at: Sun, 04 Jan 2015 05:41:06 GMT
+recorded_with: VCR 2.9.3

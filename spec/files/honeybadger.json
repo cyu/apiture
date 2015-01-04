@@ -1,0 +1,80 @@
+{
+  "swagger": "2.0",
+
+  "info": {
+    "title": "Honeybadger",
+    "description": "Honeybadger Read API v1",
+    "version": "1"
+  },
+
+  "host": "api.honeybadger.io",
+
+  "basePath": "/v1",
+
+  "schemes": ["https"],
+
+  "produces": ["application/json"],
+
+  "paths": {
+    "/projects/{projectId}/faults": {
+      "get": {
+        "summary": "Returns a list of faults for the given project",
+        "externalDocs": {
+          "url": "https://www.honeybadger.io/documentation/read_api"
+        },
+        "operationId": "getFaults",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query"
+          }
+        ]
+      }
+    },
+    "/projects/{projectId}/faults/{faultId}/notices": {
+      "get": {
+        "summary": "Returns a list of notices for the given fault",
+        "externalDocs": {
+          "url": "https://www.honeybadger.io/documentation/read_api"
+        },
+        "operationId": "getNotices",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "faultId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query"
+          }
+        ]
+      }
+    }
+  },
+
+  "securityDefinitions": {
+    "authToken": {
+      "type": "apiKey",
+      "name": "auth_token",
+      "in": "query"
+    }
+  },
+
+  "security": {
+    "authToken": []
+  }
+}

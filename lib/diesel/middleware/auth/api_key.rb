@@ -15,7 +15,7 @@ module Diesel
           value = context.options[@id]
           if @in == :header
             env[:request_headers][@name] = value
-          elsif pass_as == :query
+          elsif @in == :query
             env[:params][@name] = value
           end
           @app.call(env)
