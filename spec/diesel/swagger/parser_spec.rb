@@ -23,7 +23,7 @@ describe Diesel::Swagger::Parser do
     api_token = specification.security_definitions['apiToken']
     expect(api_token).to_not be_nil
     expect(api_token.type).to eq "apiKey"
-    expect(api_token.in).to eq "header"
+    expect(api_token.in).to eq :header
     expect(api_token.name).to eq "X-TrackerToken"
 
     expect(specification.produces).to include "application/json"
@@ -48,7 +48,7 @@ describe Diesel::Swagger::Parser do
     param2 = path.post.parameters[1]
     expect(param2).to_not be_nil
     expect(param2.in).to eq :body
-    expect(param2.name).to eq "body"
+    expect(param2.name).to eq "story"
     expect(param2).to be_required
     expect(param2.schema).to eq "NewStory"
 
