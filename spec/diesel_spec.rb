@@ -40,4 +40,38 @@ describe Diesel do
       expect(results.response.code).to eq "200"
     end
   end
+
+  it "should be able to build a Slack API client" do
+    Slack = load_api('slack')
+    client = Slack.new
+    client.logger = Logger.new(STDOUT)
+    client.logger.level = Logger::DEBUG
+
+    VCR.use_cassette('slack') do
+      results = client.post_message(path: 'abcd/efgh/ijkl',
+                                    payload: {
+                                      text: 'Testing',
+                                      username: 'TestBot',
+                                      attachments: [
+                                        {
+                                          fallback: "test fallback text",
+                                          text: "test text",
+                                          pretext: "test pretext",
+                                          fields: [
+                                            {
+                                              title: "test field 1",
+                                              value: "test value 1"
+                                            },
+                                            {
+                                              title: "test field 2",
+                                              value: "test value 2"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    })
+      expect(results.response.code).to eq "200"
+      expect(results.parsed_response).to eq "ok"
+    end
+  end
 end

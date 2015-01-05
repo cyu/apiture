@@ -1,4 +1,5 @@
 require 'diesel/swagger/node'
+require 'diesel/swagger/item_type'
 
 module Diesel
   module Swagger

@@ -4,12 +4,12 @@ require 'diesel/swagger/parser'
 describe Diesel::Swagger::Parser do
   subject { Diesel::Swagger::Parser }
 
-  let(:specification_json) do
-    File.read(File.join(File.dirname(__FILE__), '..', '..', 'files', 'pivotal_tracker.json'))
+  def load_spec(name)
+    File.read(File.join(File.dirname(__FILE__), '..', '..', 'files', "#{name}.json"))
   end
 
-  it "should parse a diesel specification" do
-    specification = Diesel::Swagger::Parser.new.parse(specification_json)
+  it "should parse a swagger specification" do
+    specification = Diesel::Swagger::Parser.new.parse(load_spec('pivotal_tracker'))
     expect(specification).to_not be_nil
 
     expect(specification.host).to eq "www.pivotaltracker.com"
@@ -76,5 +76,15 @@ describe Diesel::Swagger::Parser do
       "unstarted",
       "unscheduled"
     ]
+  end
+
+  it "should parse a swagger specification with an array of schema objects" do
+    specification = Diesel::Swagger::Parser.new.parse(load_spec('slack'))
+    payload = specification.definitions["Payload"]
+
+    attachments_prop = payload.properties['attachments']
+    expect(attachments_prop.type).to eq :array
+    expect(attachments_prop.items.count).to eq 1
+    expect(attachments_prop.items.first.ref).to eq '#/definitions/Attachment'
   end
 end

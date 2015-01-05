@@ -1,0 +1,43 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://hooks.slack.com/services/abcd/efgh/ijkl
+    body:
+      encoding: UTF-8
+      string: '{"text":"Testing","username":"TestBot","attachments":[{"fallback":"test
+        fallback text","text":"test text","pretext":"test pretext","fields":[{"title":"test
+        field 1","value":"test value 1"},{"title":"test field 2","value":"test value
+        2"}]}]}'
+    headers:
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - text/html
+      Date:
+      - Sun, 04 Jan 2015 21:21:29 GMT
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '2'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: ok
+    http_version:
+  recorded_at: Sun, 04 Jan 2015 21:21:29 GMT
+recorded_with: VCR 2.9.3

@@ -32,6 +32,15 @@ module Diesel
         specification.definitions = build_node_hash(Swagger::Definition, json, 'definitions') do |definition, def_json|
           definition.properties = build_node_hash(Swagger::Property, def_json, 'properties') do |prop, prop_json|
             prop.enum = prop_json['enum']
+            if prop_json['items']
+              prop.items = [prop_json['items']].flatten.map do |item_json|
+                build_node(Swagger::ItemType, item_json).tap do |item_type|
+                  if ref = item_json['$ref']
+                    item_type.ref = ref
+                  end
+                end
+              end
+            end
           end
         end
         specification

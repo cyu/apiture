@@ -1,0 +1,88 @@
+{
+  "swagger": "2.0",
+
+  "info": {
+    "title": "Slack",
+    "description": "Slack Incoming Webhook",
+    "version": "1"
+  },
+
+  "host": "hooks.slack.com",
+
+  "basePath": "/services",
+
+  "schemes": ["https"],
+
+  "produces": ["application/json"],
+
+  "paths": {
+    "/{path}": {
+      "post": {
+        "summary": "Post message into Slack",
+        "operationId": "postMessage",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "payload",
+            "in": "body",
+            "required": true,
+            "schema": "Payload"
+          }
+        ]
+      }
+    }
+  },
+
+  "definitions": {
+    "Payload": {
+      "title": "Payload",
+      "type": "object",
+      "required": [ "text" ],
+      "properties": {
+        "text": { "type": "string" },
+        "username": { "type": "string" },
+        "icon_url": { "type": "string" },
+        "icon_emoji": { "type": "string" },
+        "channel": { "type": "string" },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Attachment"
+          }
+        }
+      }
+    },
+    "Attachment": {
+      "title": "Attachment",
+      "type": "object",
+      "required": ["fallback"],
+      "properties": {
+        "fallback": { "type": "string" },
+        "text": { "type": "string" },
+        "pretext": { "type": "string" },
+        "color": { "type": "string" },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AttachmentField"
+          }
+        }
+      },
+      "AttachmentField": {
+        "title": "Attachment Field",
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": { "type": "string" },
+          "value": { "type": "string" },
+          "short": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}
