@@ -85,6 +85,6 @@ describe Diesel::Swagger::Parser do
     attachments_prop = payload.properties['attachments']
     expect(attachments_prop.type).to eq :array
     expect(attachments_prop.items.count).to eq 1
-    expect(attachments_prop.items.first.ref).to eq '#/definitions/Attachment'
+    expect(attachments_prop.items["$ref"]).to eq '#/definitions/Attachment'
   end
 end

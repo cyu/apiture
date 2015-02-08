@@ -1,5 +1,4 @@
 require 'diesel/swagger/node'
-require 'diesel/swagger/item_type'
 
 module Diesel
   module Swagger
@@ -18,9 +17,9 @@ module Diesel
       attribute :max_items
       attribute :min_items
       attribute :unique_items, type: :boolean
+      attribute :items
 
       list :enum
-      list :items
     end
   end
 end
