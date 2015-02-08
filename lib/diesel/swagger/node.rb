@@ -130,6 +130,11 @@ module Diesel
         h
       end
 
+      def to_json
+        MultiJson.dump(serializable_hash)
+      end
+      alias :to_s :to_json
+
       private
 
         def value_or_serializable_hash(v)

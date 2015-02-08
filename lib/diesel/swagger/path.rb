@@ -4,15 +4,14 @@ require 'diesel/swagger/operation'
 module Diesel
   module Swagger
     class Path < Node
-      attribute :get, validate: true
-      attribute :put, validate: true
-      attribute :post, validate: true
-      attribute :delete, validate: true
-      attribute :options, validate: true
-      attribute :head, validate: true
-      attribute :patch, validate: true
       attr_reader :id
       alias :path_name :id
+
+      REQUEST_METHODS = [:get, :put, :post, :delete, :options, :head, :patch]
+
+      REQUEST_METHODS.each do |m|
+        attribute m, validate: true
+      end
 
       list :parameters, validate: true
 
@@ -21,8 +20,12 @@ module Diesel
         @id = id
       end
 
+      def operations
+        REQUEST_METHODS.map { |m| __send__(m) }.compact
+      end
+
       def operations_map
-        [:get, :put, :post, :delete, :options, :head, :patch].reduce({}) do |m, method|
+        REQUEST_METHODS.reduce({}) do |m, method|
           if op = __send__(method)
             m[method] = op
           end
