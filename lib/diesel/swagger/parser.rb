@@ -22,7 +22,7 @@ module Diesel
         specification.paths = build_node_hash(Path, json, 'paths') do |path, path_json|
           [:get, :put, :post, :delete, :options, :head, :patch].each do |method|
             if op_json = path_json[method.to_s]
-              op = build_node(Operation, op_json)
+              op = build_node(Operation, op_json, constructor_args: [method])
               op.external_docs = build_node(ExternalDocs, op_json['externalDocs'])
               op.parameters = build_node_list(Parameter, op_json, 'parameters')
               path.send("#{method}=".to_sym, op)
@@ -40,9 +40,13 @@ module Diesel
 
       protected
 
-        def build_node(model_class, json)
+        def build_node(model_class, json, options = {})
           if json
-            model = model_class.new
+            model = if constructor_args = options[:constructor_args]
+              model_class.new(*constructor_args)
+            else
+              model_class.new
+            end
             model_class.attribute_names.each do |att|
               model.send("#{att}=".to_sym, json[camelize(att.to_s, false)])
             end
@@ -60,7 +64,7 @@ module Diesel
 
         def build_node_hash(model_class, json, json_hash_key)
           (json[json_hash_key] || {}).reduce({}) do |m, (k, v)|
-            m[k] = node = build_node(model_class, v)
+            m[k] = node = build_node(model_class, v, constructor_args: [k])
             yield(node, v) if block_given?
             m
           end
