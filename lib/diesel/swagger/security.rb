@@ -12,6 +12,10 @@ module Diesel
         @id = id
       end
 
+      def serializable_hash
+        scopes || []
+      end
+
     end
   end
 end

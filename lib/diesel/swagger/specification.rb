@@ -25,7 +25,7 @@ module Diesel
       hash :parameters, validate: true
       hash :responses, validate: true
       hash :security_definitions, validate: true
-      hash :security
+      hash :security, validate: true
     end
   end
 end
