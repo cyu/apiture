@@ -26,6 +26,9 @@ describe Diesel::Swagger::Parser do
     expect(api_token.in).to eq :header
     expect(api_token.name).to eq "X-TrackerToken"
 
+    security = specification.security['apiToken']
+    expect(security).to_not be_nil
+
     expect(specification.produces).to include "application/json"
 
     expect(specification.paths.count).to eq 1

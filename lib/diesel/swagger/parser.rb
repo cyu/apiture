@@ -18,7 +18,12 @@ module Diesel
         specification.external_docs = build_node(ExternalDocs, json['externalDocs'])
         specification.schemes = json['schemes']
         specification.produces = json['produces'] || []
-        specification.security_definitions = build_node_hash(Swagger::SecurityDefinition, json, 'securityDefinitions')
+        specification.security_definitions = build_node_hash(SecurityDefinition, json, 'securityDefinitions')
+        specification.security = (json['security'] || {}).reduce({}) do |memo, (k,v)|
+          memo[k] = security = Security.new(k)
+          security.scopes = v
+          memo
+        end
         specification.paths = build_node_hash(Path, json, 'paths') do |path, path_json|
           [:get, :put, :post, :delete, :options, :head, :patch].each do |method|
             if op_json = path_json[method.to_s]
@@ -29,8 +34,8 @@ module Diesel
             end
           end
         end
-        specification.definitions = build_node_hash(Swagger::Definition, json, 'definitions') do |definition, def_json|
-          definition.properties = build_node_hash(Swagger::Property, def_json, 'properties') do |prop, prop_json|
+        specification.definitions = build_node_hash(Definition, json, 'definitions') do |definition, def_json|
+          definition.properties = build_node_hash(Property, def_json, 'properties') do |prop, prop_json|
             prop.enum = prop_json['enum']
             prop.items = prop_json['items']
           end

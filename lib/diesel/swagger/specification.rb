@@ -1,5 +1,6 @@
 require 'diesel/swagger/info'
 require 'diesel/swagger/external_docs'
+require 'diesel/swagger/security'
 require 'diesel/swagger/security_definition'
 require 'diesel/swagger/path'
 require 'diesel/swagger/definition'
