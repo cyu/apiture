@@ -1,12 +1,12 @@
 # Diesel
 
-Create API Clients From an DSL
+Create API Clients from Swagger specifications
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'diesel'
+    gem 'diesel-api-dsl'
 
 And then execute:
 
@@ -18,7 +18,16 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+PivotalTracker = Diesel.load_path("pivotal_tracker.json")
+client = PivotalTracker.new(api_token: 'afaketoken')
+client.create_story(
+  project_id: '1234567',
+  story: {
+    name: 'Testing Pivotal API',
+    story_type: :chore
+  })
+```
 
 ## Contributing
 
