@@ -88,6 +88,10 @@ module Diesel
                         id: Diesel::Utils::Inflections.underscore(name).to_sym,
                         in: security_def.in,
                         name: security_def.name
+                  when 'oauth2'
+                    require 'diesel/middleware/auth/oauth2'
+                    use Diesel::Middleware::Auth::OAuth2,
+                        id: Diesel::Utils::Inflections.underscore(name).to_sym
                   else
                     raise APIError, "Unsupported security definition: #{security_def.type}"
                   end
