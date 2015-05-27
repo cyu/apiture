@@ -1,3 +1,4 @@
+require 'diesel/version'
 require 'diesel/api_error'
 require 'diesel/utils/inflections'
 require 'diesel/api_base'
@@ -72,6 +73,8 @@ module Diesel
             Diesel::Endpoint.new(endpoint_name, endpoint_url, method).tap do |endpoint|
               endpoint.config_middleware do
                 use Diesel::Middleware::Debug
+
+                use Diesel::Middleware::SetHeader, 'User-Agent' => "diesel-rb/#{Diesel::VERSION}"
 
                 if spec.produces.any?
                   use Diesel::Middleware::SetHeader, 'Content-Type' => spec.produces.first
