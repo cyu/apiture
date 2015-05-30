@@ -9,12 +9,19 @@ module Diesel
         def initialize(app, options)
           @app = app
           @id = options[:id]
+          @in = options[:in]
+          @name = options[:name]
         end
 
         def call(env)
           context = env[:context]
           auth_options = context.options[@id]
-          env[:request_headers][AUTHORIZATION_HEADER] = AUTHORIZATION_HEADER_FORMAT % auth_options[:token]
+          token = auth_options[:token]
+          if @in == :query
+            env[:params][@name] = token
+          else
+            env[:request_headers][AUTHORIZATION_HEADER] = AUTHORIZATION_HEADER_FORMAT % token
+          end
           @app.call(env)
         end
 
