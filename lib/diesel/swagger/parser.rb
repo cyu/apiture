@@ -55,6 +55,12 @@ module Diesel
             model_class.attribute_names.each do |att|
               model.send("#{att}=".to_sym, json[camelize(att.to_s, false)])
             end
+            json.each_pair do |key, value|
+              if key.match(/^x-/)
+                extension_name = underscore(key.sub(/^x-/, '')).to_sym
+                model.extensions[extension_name] = value
+              end
+            end
             model
           end
         end

@@ -81,6 +81,10 @@ module Diesel
         @errors = []
       end
 
+      def extensions
+        @extensions ||= {}
+      end
+
       def validate
       end
 
