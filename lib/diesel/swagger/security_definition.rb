@@ -12,6 +12,7 @@ module Diesel
       attribute :flow
       attribute :authorization_url
       attribute :token_url
+      attribute :scopes
 
       def initialize(id)
         super()
