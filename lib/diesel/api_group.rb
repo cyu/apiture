@@ -20,8 +20,9 @@ module Diesel
       @data_models = data_models
     end
 
-    def execute(options, endpoint, parameters)
-      RequestContext.new(options, self, endpoint, parameters).perform
+    def execute(options, endpoint, *parameters)
+      params = parameters.last || {}
+      RequestContext.new(options, self, endpoint, params).perform
     end
   end
 end

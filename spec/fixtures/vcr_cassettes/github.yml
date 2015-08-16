@@ -1,0 +1,82 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.github.com/user
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - diesel-rb/0.1.3
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer a19b557c75beed59278048da5acd20a17f77692e
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Sun, 16 Aug 2015 11:44:41 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '1097'
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4999'
+      X-Ratelimit-Reset:
+      - '1439729081'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Last-Modified:
+      - Thu, 30 Jul 2015 10:31:45 GMT
+      Etag:
+      - '"9d21057f20dc65085a97b97880dba697"'
+      X-Oauth-Scopes:
+      - read:org, repo:status
+      X-Accepted-Oauth-Scopes:
+      - ''
+      X-Oauth-Client-Id:
+      - xxx
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      X-Github-Media-Type:
+      - github.v3; format=json
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      Content-Security-Policy:
+      - default-src 'none'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - 49CF3EF9:7C7A:4DC7847:55D077A9
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Served-By:
+      - 173530fed4bbeb1e264b2ed22e8b5c20
+    body:
+      encoding: UTF-8
+      string: '{"login":"cyu","id":2431,"avatar_url":"https://avatars.githubusercontent.com/u/2431?v=3","gravatar_id":"","url":"https://api.github.com/users/cyu","html_url":"https://github.com/cyu","followers_url":"https://api.github.com/users/cyu/followers","following_url":"https://api.github.com/users/cyu/following{/other_user}","gists_url":"https://api.github.com/users/cyu/gists{/gist_id}","starred_url":"https://api.github.com/users/cyu/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/cyu/subscriptions","organizations_url":"https://api.github.com/users/cyu/orgs","repos_url":"https://api.github.com/users/cyu/repos","events_url":"https://api.github.com/users/cyu/events{/privacy}","received_events_url":"https://api.github.com/users/cyu/received_events","type":"User","site_admin":false,"name":"Calvin
+        Yu","company":"Scoutmob","blog":"http://blog.codeeg.com","location":"Atlanta,
+        GA","email":"me@sourcebender.com","hireable":null,"bio":null,"public_repos":54,"public_gists":18,"followers":30,"following":7,"created_at":"2008-03-06T18:28:14Z","updated_at":"2015-07-30T10:31:45Z"}'
+    http_version: 
+  recorded_at: Sun, 16 Aug 2015 11:44:42 GMT
+recorded_with: VCR 2.9.3

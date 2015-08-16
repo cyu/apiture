@@ -25,8 +25,8 @@ module Diesel
           APIGroup.new.tap do |group|
             group.endpoints = build_endpoints
             group.endpoints.each do |endpoint|
-              klass.send(:define_method, endpoint.name.to_sym) do |parameters|
-                group.execute(self.options, endpoint, parameters)
+              klass.send(:define_method, endpoint.name.to_sym) do |*args|
+                group.execute(self.options, endpoint, *args)
               end
             end
           end

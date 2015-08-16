@@ -1,0 +1,127 @@
+{
+  "swagger": "2.0",
+
+  "info": {
+    "title": "Github",
+    "version": "3"
+  },
+
+  "host": "api.github.com",
+
+  "basePath": "/",
+
+  "schemes": ["https"],
+
+  "produces": ["application/json"],
+
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "https://github.com/login/oauth/authorize",
+      "tokenUrl": "https://github.com/login/oauth/access_token",
+      "scopes": {
+        "user": "Grants read/write access to profile info only.",
+        "user:email": "Grants read access to a user’s email addresses.",
+        "user:follow": "Grants access to follow or unfollow other users.",
+        "public_repo": "Grants read/write access to code, commit statuses, collaborators, and deployment statuses for public repositories and organizations.",
+        "repo": "Grants read/write access to code, commit statuses, collaborators, and deployment statuses for public and private repositories and organizations.",
+        "repo_deployment": "Grants access to deployment statuses for public and private repositories.",
+        "repo:status": "Grants read/write access to public and private repository commit statuses.",
+        "delete_repo": "Grants access to delete adminable repositories.",
+        "notifications": "Grants read access to a user’s notifications.",
+        "gist": "Grants write access to gists.",
+        "read:repo_hook": "Grants read and ping access to hooks in public or private repositories.",
+        "write:repo_hook": "Grants read, write, and ping access to hooks in public or private repositories.",
+        "admin:repo_hook": "Grants read, write, ping, and delete access to hooks in public or private repositories.",
+        "admin:org_hook": "Grants read, write, ping, and delete access to organization hooks.",
+        "read:org": "Read-only access to organization, teams, and membership.",
+        "write:org": "Publicize and unpublicize organization membership.",
+        "admin:org": "Fully manage organization, teams, and memberships.",
+        "read:public_key": "List and view details for public keys.",
+        "write:public_key": "Create, list, and view details for public keys.",
+        "admin:public_key": "Fully manage public keys."
+      }
+    }
+  },
+
+  "paths": {
+    "/user": {
+      "get": {
+        "summary": "Get the authenticated user",
+        "operationId": "getUser"
+      }
+    },
+    "/user/repos": {
+      "get": {
+        "summary": "List repositories that are accessible to the authenticated user.",
+        "operationId": "getUserRepos",
+        "parameters": [{
+          "name": "visibility",
+          "in": "query",
+          "enum": [
+            "all",
+            "public",
+            "private"
+          ]
+        }, {
+          "name": "affiliation",
+          "in": "query"
+        }, {
+          "name": "type",
+          "in": "query",
+          "enum": [
+            "all",
+            "owner",
+            "public",
+            "private",
+            "member"
+          ]
+        }, {
+          "name": "sort",
+          "in": "query",
+          "enum": [
+            "created",
+            "updated",
+            "pushed",
+            "full_name"
+          ]
+        }, {
+          "name": "direction",
+          "in": "query",
+          "enum": [
+            "asc",
+            "desc"
+          ]
+        }]
+      }
+    },
+    "/user/orgs": {
+      "get": {
+        "summary": "List organizations for the authenticated user",
+        "operationId": "getUserOrgs"
+      }
+    },
+    "/orgs/{org}/repos": {
+      "get": {
+        "summary": "List repositories for the specified org",
+        "operationId": "getOrgRepos",
+        "parameters": [{
+          "name": "org",
+          "in": "path"
+        }, {
+          "name": "type",
+          "in": "query",
+          "enum": [
+            "all",
+            "public",
+            "private",
+            "forks",
+            "sources",
+            "member"
+          ]
+        }]
+      }
+    }
+  }
+}
