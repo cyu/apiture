@@ -1,27 +1,23 @@
 module Diesel
   module Middleware
     module Auth
-      class OAuth2
+      class Basic
 
         AUTHORIZATION_HEADER = 'Authorization'.freeze
-        AUTHORIZATION_HEADER_FORMAT = 'Bearer %s'.freeze
 
         def initialize(app, options)
           @app = app
           @id = options[:id]
-          @in = options[:in]
-          @name = options[:name]
         end
 
         def call(env)
           context = env[:context]
           auth_options = context.options[@id]
-          token = auth_options[:token]
-          if @in == :query
-            env[:params][@name] = token
-          else
-            env[:request_headers][AUTHORIZATION_HEADER] = AUTHORIZATION_HEADER_FORMAT % token
-          end
+          username = auth_options[:username]
+          password = auth_options[:password]
+          value = Base64.encode64([username, password].join(':'))
+          value.gsub!("\n", '')
+          env[:request_headers][AUTHORIZATION_HEADER] = "Basic #{value}"
           @app.call(env)
         end
 

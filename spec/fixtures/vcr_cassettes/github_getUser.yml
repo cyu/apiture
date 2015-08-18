@@ -12,7 +12,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - Bearer a19b557c75beed59278048da5acd20a17f77692e
+      - Bearer afaketoken
   response:
     status:
       code: 200

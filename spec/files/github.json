@@ -42,6 +42,9 @@
         "write:public_key": "Create, list, and view details for public keys.",
         "admin:public_key": "Fully manage public keys."
       }
+    },
+    "basic": {
+      "type": "basic"
     }
   },
 
@@ -121,6 +124,23 @@
             "member"
           ]
         }]
+      }
+    },
+    "/applications/{clientId}/tokens/{accessToken}": {
+      "get": {
+        "operationId": "checkAuthorization",
+        "parameters": [{
+          "name": "clientId",
+          "in": "path",
+          "required": true
+        },{
+          "name": "accessToken",
+          "in": "path",
+          "required": true
+        }],
+        "security": {
+          "basic": []
+        }
       }
     }
   }

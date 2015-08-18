@@ -18,18 +18,16 @@ module Diesel
         specification.external_docs = build_node(ExternalDocs, json['externalDocs'])
         specification.schemes = json['schemes']
         specification.produces = json['produces'] || []
-        specification.security_definitions = build_node_hash(SecurityDefinition, json, 'securityDefinitions')
-        specification.security = (json['security'] || {}).reduce({}) do |memo, (k,v)|
-          memo[k] = security = Security.new(k)
-          security.scopes = v
-          memo
-        end
+        build_security_definition_hash(specification, json)
+        build_security_hash(specification, json)
         specification.paths = build_node_hash(Path, json, 'paths') do |path, path_json|
           [:get, :put, :post, :delete, :options, :head, :patch].each do |method|
             if op_json = path_json[method.to_s]
               op = build_node(Operation, op_json, constructor_args: [method])
               op.external_docs = build_node(ExternalDocs, op_json['externalDocs'])
               op.parameters = build_node_list(Parameter, op_json, 'parameters')
+              build_security_definition_hash(specification, json)
+              build_security_hash(op, op_json)
               path.send("#{method}=".to_sym, op)
             end
           end
@@ -44,6 +42,18 @@ module Diesel
       end
 
       protected
+        def build_security_hash(parent_node, json)
+          sec_json = json['security']
+          parent_node.security = (sec_json || {}).reduce({}) do |memo, (k,v)|
+            memo[k] = security = Security.new(k)
+            security.scopes = v
+            memo
+          end
+        end
+
+        def build_security_definition_hash(parent_node, json)
+          parent_node.security_definitions = build_node_hash(SecurityDefinition, json, 'securityDefinitions')
+        end
 
         def build_node(model_class, json, options = {})
           if json

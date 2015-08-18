@@ -90,4 +90,10 @@ describe Diesel::Swagger::Parser do
     expect(attachments_prop.items.count).to eq 1
     expect(attachments_prop.items["$ref"]).to eq '#/definitions/Attachment'
   end
+
+  it "should parse a swagger specification with operation specific security" do
+    specification = Diesel::Swagger::Parser.new.parse(load_spec('github'))
+    op = specification.paths["/applications/{clientId}/tokens/{accessToken}"].get
+    expect(op.security["basic"]).to_not be_nil
+  end
 end

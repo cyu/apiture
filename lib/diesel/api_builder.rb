@@ -80,22 +80,48 @@ module Diesel
                   use Diesel::Middleware::SetHeader, 'Content-Type' => spec.produces.first
                 end
 
-                spec.security_definitions.each_pair do |name, security_def|
-                  case security_def.type
-                  when 'apiKey'
-                    require 'diesel/middleware/auth/api_key'
-                    use Diesel::Middleware::Auth::APIKey,
-                        id: Diesel::Utils::Inflections.underscore(name).to_sym,
-                        in: security_def.in,
-                        name: security_def.name
-                  when 'oauth2'
-                    require 'diesel/middleware/auth/oauth2'
-                    use Diesel::Middleware::Auth::OAuth2,
-                        id: Diesel::Utils::Inflections.underscore(name).to_sym,
-                        in: security_def.in,
-                        name: security_def.name
-                  else
-                    raise APIError, "Unsupported security definition: #{security_def.type}"
+                security = operation.security || spec.security
+                security_ids = if security && !security.empty?
+                                 security.keys
+                               else
+                                 if operation.security_definitions && !operation.security_definitions.empty?
+                                   [operation.security_definitions.keys.first]
+                                 elsif spec.security_definitions && !spec.security_definitions.empty?
+                                   [spec.security_definitions.keys.first]
+                                 else
+                                   []
+                                 end
+                               end
+
+                unless security_ids.empty?
+                  security_defs = spec.security_definitions || {}
+                  if operation.security_definitions
+                    security_defs = security_defs.merge(operation.security_definitions)
+                  end
+
+                  security_ids.each do |name|
+                    security_def = security_defs[name]
+
+                    case security_def.type
+                    when 'apiKey'
+                      require 'diesel/middleware/auth/api_key'
+                      use Diesel::Middleware::Auth::APIKey,
+                          id: Diesel::Utils::Inflections.underscore(name).to_sym,
+                          in: security_def.in,
+                          name: security_def.name
+                    when 'oauth2'
+                      require 'diesel/middleware/auth/oauth2'
+                      use Diesel::Middleware::Auth::OAuth2,
+                          id: Diesel::Utils::Inflections.underscore(name).to_sym,
+                          in: security_def.in,
+                          name: security_def.name
+                    when "basic"
+                      require "diesel/middleware/auth/basic"
+                      use Diesel::Middleware::Auth::Basic,
+                          id: Diesel::Utils::Inflections.underscore(name).to_sym
+                    else
+                      raise APIError, "Unsupported security definition: #{security_def.type}"
+                    end
                   end
                 end
 
