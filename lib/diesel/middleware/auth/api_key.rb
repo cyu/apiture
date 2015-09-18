@@ -8,11 +8,12 @@ module Diesel
           @id = options[:id]
           @in = options[:in]
           @name = options[:name]
+          @format = options[:format]
         end
 
         def call(env)
           context = env[:context]
-          value = context.options[@id]
+          value = format_value(context.options[@id])
           if @in == :header
             env[:request_headers][@name] = value
           elsif @in == :query
@@ -21,6 +22,11 @@ module Diesel
           @app.call(env)
         end
 
+        protected
+          def format_value(val)
+            return val unless @format
+            @format % val
+          end
       end
     end
   end

@@ -128,4 +128,25 @@ describe Diesel do
       end
     end
   end
+
+  describe "Uber API" do
+    before do
+      Uber = load_api("uber")
+      @client = configure_client(Uber.new(
+        server_token: "TEST_SERVER_TOKEN"
+      ))
+    end
+
+    after do
+      Object.send(:remove_const, :Uber)
+    end
+
+    it "should be able to support x-format extension" do
+      VCR.use_cassette('uber_getProducts') do
+        results = @client.get_products(latitude: 33.776776, longitude: -84.389683)
+        expect(results.response.code).to eq "200"
+        expect(results.parsed_response["products"].length).to eq 5
+      end
+    end
+  end
 end

@@ -108,7 +108,8 @@ module Diesel
                       use Diesel::Middleware::Auth::APIKey,
                           id: Diesel::Utils::Inflections.underscore(name).to_sym,
                           in: security_def.in,
-                          name: security_def.name
+                          name: security_def.name,
+                          format: security_def.extensions[:format]
                     when 'oauth2'
                       require 'diesel/middleware/auth/oauth2'
                       use Diesel::Middleware::Auth::OAuth2,

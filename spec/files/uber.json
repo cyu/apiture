@@ -1,0 +1,43 @@
+{
+  "swagger": "2.0",
+
+  "info": {
+    "title": "Uber",
+    "version": "1"
+  },
+
+  "host": "api.uber.com",
+
+  "basePath": "/v1",
+
+  "schemes": ["https"],
+
+  "produces": ["application/json"],
+
+  "securityDefinitions": {
+    "server_token": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "x-format": "Token %s"
+    }
+  },
+
+  "paths": {
+    "/products": {
+      "get": {
+        "summary": "Return information about products offered at a given location.",
+        "operationId": "getProducts",
+        "parameters": [{
+          "name": "latitude",
+          "in": "query",
+          "type": "number"
+        }, {
+          "name": "longitude",
+          "in": "query",
+          "type": "number"
+        }]
+      }
+    }
+  }
+}

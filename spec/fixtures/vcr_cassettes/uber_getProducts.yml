@@ -1,0 +1,60 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.uber.com/v1/products?latitude=33.776776&longitude=-84.389683
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - diesel-rb/0.1.3
+      Content-Type:
+      - application/json
+      Authorization:
+      - Token TEST_SERVER_TOKEN
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 18 Sep 2015 04:02:36 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '2079'
+      Connection:
+      - keep-alive
+      X-Rate-Limit-Remaining:
+      - '999'
+      Content-Language:
+      - en
+      Etag:
+      - '"8b714beb16ec06c6c555ae761aee791ecc20ea3a"'
+      X-Rate-Limit-Reset:
+      - '1442552400'
+      X-Rate-Limit-Limit:
+      - '1000'
+      X-Uber-App:
+      - uberex-nonsandbox
+      Strict-Transport-Security:
+      - max-age=0
+      X-Xss-Protection:
+      - 1; mode=block
+    body:
+      encoding: UTF-8
+      string: '{"products":[{"capacity":4,"product_id":"6d898741-0175-4c71-ad5f-93fc66270d6a","price_details":{"service_fees":[{"fee":1.0,"name":"Safe
+        rides fee"}],"cost_per_minute":0.16,"distance_unit":"mile","minimum":5.0,"cost_per_distance":0.78,"base":1.15,"cancellation_fee":6.0,"currency_code":"USD"},"image":"http:\/\/d1a3f4spazzrp4.cloudfront.net\/car-types\/mono\/mono-uberx.png","display_name":"uberX","description":"The
+        low-cost Uber"},{"capacity":6,"product_id":"171a12a5-5b08-40cc-bfb0-416b9256147a","price_details":{"service_fees":[{"fee":1.0,"name":"Safe
+        rides fee"}],"cost_per_minute":0.3,"distance_unit":"mile","minimum":8.0,"cost_per_distance":1.9,"base":3.0,"cancellation_fee":6.0,"currency_code":"USD"},"image":"http:\/\/d1a3f4spazzrp4.cloudfront.net\/car-types\/mono\/mono-uberxl2.png","display_name":"uberXL","description":"Low-Cost
+        Rides for Larger Groups"},{"capacity":4,"product_id":"3d3dff24-c799-45ba-ad08-3d72c5b843b1","price_details":{"service_fees":[{"fee":1.0,"name":"Safe
+        rides fee"}],"cost_per_minute":0.35,"distance_unit":"mile","minimum":10.0,"cost_per_distance":2.0,"base":4.0,"cancellation_fee":10.0,"currency_code":"USD"},"image":"http:\/\/d1a3f4spazzrp4.cloudfront.net\/car-types\/mono\/mono-uberselect.png","display_name":"UberSELECT","description":"The
+        Next Step Towards Luxury"},{"capacity":4,"product_id":"aff35634-a71e-470f-8c7b-703dec02e15b","price_details":{"service_fees":[],"cost_per_minute":0.4,"distance_unit":"mile","minimum":15.0,"cost_per_distance":3.25,"base":7.0,"cancellation_fee":10.0,"currency_code":"USD"},"image":"http:\/\/d1a3f4spazzrp4.cloudfront.net\/car-types\/mono\/mono-black.png","display_name":"UberBLACK","description":"The
+        original Uber"},{"capacity":6,"product_id":"852310f8-a778-4191-bb7b-8c5f9a9899f6","price_details":{"service_fees":[],"cost_per_minute":0.5,"distance_unit":"mile","minimum":25.0,"cost_per_distance":4.0,"base":14.0,"cancellation_fee":10.0,"currency_code":"USD"},"image":"http:\/\/d1a3f4spazzrp4.cloudfront.net\/car-types\/mono\/mono-suv.png","display_name":"UberSUV","description":"Room
+        for everyone"}]}'
+    http_version: 
+  recorded_at: Fri, 18 Sep 2015 04:02:36 GMT
+recorded_with: VCR 2.9.3
