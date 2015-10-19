@@ -102,6 +102,10 @@ module Diesel
                   security_ids.each do |name|
                     security_def = security_defs[name]
 
+                    if security_def.nil?
+                      raise APIError, "Missing security definition: #{name}, operation=#{endpoint_name}, method=#{method}"
+                    end
+
                     case security_def.type
                     when 'apiKey'
                       require 'diesel/middleware/auth/api_key'

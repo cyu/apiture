@@ -48,11 +48,24 @@
     }
   },
 
+  "security": {
+    "oauth2": []
+  },
+
   "paths": {
     "/user": {
       "get": {
         "summary": "Get the authenticated user",
         "operationId": "getUser"
+      }
+    },
+    "/user/emails": {
+      "get": {
+        "summary": "List email addresses for a user",
+        "operationId": "getUserEmails",
+        "security": {
+          "basic": ["user:email"]
+        }
       }
     },
     "/user/repos": {
@@ -102,7 +115,13 @@
     "/user/orgs": {
       "get": {
         "summary": "List organizations for the authenticated user",
-        "operationId": "getUserOrgs"
+        "operationId": "getUserOrgs",
+        "security": {
+          "oauth2": [
+            "user",
+            "read:org"
+          ]
+        }
       }
     },
     "/orgs/{org}/repos": {
@@ -111,7 +130,8 @@
         "operationId": "getOrgRepos",
         "parameters": [{
           "name": "org",
-          "in": "path"
+          "in": "path",
+          "required": true
         }, {
           "name": "type",
           "in": "query",
@@ -123,6 +143,25 @@
             "sources",
             "member"
           ]
+        }]
+      }
+    },
+    "/repos/{owner}/{repo}/issues/{number}": {
+      "get": {
+        "summary": "Get a single issue",
+        "operationId": "getIssue",
+        "parameters": [{
+          "name": "owner",
+          "in": "path",
+          "required": true
+        },{
+          "name": "repo",
+          "in": "path",
+          "required": true
+        },{
+          "name": "number",
+          "in": "path",
+          "required": true
         }]
       }
     },
