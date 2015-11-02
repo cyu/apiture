@@ -1,0 +1,502 @@
+{
+  "swagger": "2.0",
+
+  "info": {
+    "title": "Mandrill",
+    "version": "1.0"
+  },
+
+  "host": "mandrillapp.com",
+
+  "basePath": "/api/1.0/",
+
+  "schemes": ["https"],
+
+  "produces": ["application/json"],
+  "consumes": ["application/json"],
+
+  "securityDefinitions": {
+    "key": {
+      "type": "apiKey",
+      "name": "key",
+      "in": "body"
+    }
+  },
+
+  "security": {
+    "key": []
+  },
+
+  "paths": {
+    "/users/info.json": {
+      "post": {
+        "summary": "Return the information about the API-connected user",
+        "operationId": "userInfo"
+      }
+    },
+    "/users/ping.json": {
+      "post": {
+        "summary": "Validate an API key and respond to a ping",
+        "operationId": "userPing"
+      },
+      "produces": ["text/plain"]
+    },
+    "/users/ping2.json": {
+      "post": {
+        "summary": "Validate an API key and respond to a ping (anal JSON parser version)",
+        "operationId": "userPing2"
+      }
+    },
+    "/users/senders.json": {
+      "post": {
+        "summary": "Return the senders that have tried to use this account, both verified and unverified",
+        "operationId": "userSenders"
+      }
+    },
+
+    "/messages/send.json": {
+      "post": {
+        "summary": "Send a new transactional message through Mandrill",
+        "operationId": "messageSend",
+        "parameters": [{
+          "name": "request",
+          "in": "body",
+          "schema": {
+            "type": "object",
+            "required": [ "message" ],
+            "properties": {
+              "message": {
+                "$ref": "#/definitions/Message"
+              },
+              "async": {
+                "type": "boolean"
+              },
+              "ip_pool": {
+                "type": "string"
+              },
+              "send_at": {
+                "type": "string",
+                "x-date-format": "%Y-%m-%d %H:%M:%S"
+              }
+            }
+          }
+        }]
+      }
+    },
+    "/messages/send-template.json": {
+      "post": {
+        "summary": "Send a new transactional message through Mandrill using a template",
+        "operationId": "messageSendTemplate",
+        "parameters": [{
+          "name": "request",
+          "in": "body",
+          "schema": {
+            "type": "object",
+            "required": [
+              "template_name",
+              "template_content",
+              "message"
+            ],
+            "properties": {
+              "template_name": {
+                "type": "string"
+              },
+              "template_content": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/TemplateContent"
+                }
+              },
+              "message": {
+                "$ref": "#/definitions/Message"
+              },
+              "async": {
+                "type": "boolean"
+              },
+              "ip_pool": {
+                "type": "string"
+              },
+              "send_at": {
+                "type": "string",
+                "x-date-format": "%Y-%m-%d %H:%M:%S"
+              }
+            }
+          }
+        }]
+      }
+    },
+
+    "/webhooks/list.json": {
+      "post": {
+        "summary": "Get the list of all webhooks defined on the account",
+        "operationId": "webhookList"
+      }
+    },
+    "/webhooks/add.json": {
+      "post": {
+        "summary": "Add a new webhook",
+        "operationId": "webhookAdd",
+        "parameters": [{
+          "name": "request",
+          "in": "body",
+          "schema": {
+            "type": "object",
+            "required": [
+              "key",
+              "url"
+            ],
+            "properties": {
+              "url": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "events": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "send",
+                    "hard_bounce",
+                    "soft_bounce",
+                    "open",
+                    "click",
+                    "spam",
+                    "unsub",
+                    "reject"
+                  ]
+                }
+              }
+            }
+          }
+        }]
+      }
+    },
+    "/webhooks/info.json": {
+      "post": {
+        "summary": "Given the ID of an existing webhook, return the data about it",
+        "operationId": "webhookInfo",
+        "parameters": [{
+          "name": "request",
+          "in": "body",
+          "schema": {
+            "type": "object",
+            "required": [ "id" ],
+            "properties": {
+              "id": {
+                "type": "integer"
+              }
+            }
+          }
+        }]
+      }
+    },
+    "/webhooks/update.json": {
+      "post": {
+        "summary": "Update an existing webhook",
+        "operationId": "webhookUpdate",
+        "parameters": [{
+          "name": "request",
+          "in": "body",
+          "schema": {
+            "type": "object",
+            "required": [ "id", "url" ],
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "url": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "events": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "send",
+                    "hard_bounce",
+                    "soft_bounce",
+                    "open",
+                    "click",
+                    "spam",
+                    "unsub",
+                    "reject"
+                  ]
+                }
+              }
+            }
+          }
+        }]
+      }
+    },
+    "/webhooks/delete.json": {
+      "post": {
+        "summary": "Delete an existing webhook",
+        "operationId": "webhookDelete",
+        "parameters": [{
+          "name": "request",
+          "in": "body",
+          "schema": {
+            "type": "object",
+            "required": [ "id" ],
+            "properties": {
+              "id": {
+                "type": "integer"
+              }
+            }
+          }
+        }]
+      }
+    }
+  },
+
+  "definitions": {
+    "MergeVars": {
+      "type": "object",
+      "required": [ "rcpt" ],
+      "properties": {
+        "rcpt": {
+          "type": "string",
+          "description": "the email address of the recipient that the merge variables should apply to"
+        },
+        "vars": {
+          "type": "array",
+          "description": "the recipient's merge variables",
+          "items": {
+            "$ref": "#/definitions/Var"
+          }
+        }
+      }
+    },
+    "Var": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "the merge variable's name. Merge variable names are case-insensitive and may not start with _"
+        },
+        "content": {
+          "type": "string",
+          "description": "the merge variable's content"
+        }
+      }
+    },
+    "Attachment": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "the MIME type of the attachment"
+        },
+        "name": {
+          "type": "string",
+          "description": "the file name of the attachment"
+        },
+        "content": {
+          "type": "string",
+          "description": "the content of the attachment as a base64-encoded string"
+        }
+      }
+    },
+    "Recipient": {
+      "type": "object",
+      "required": ["email"],
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "the email address of the recipient"
+        },
+        "name": {
+          "type": "string",
+          "description": "the optional display name to use for the recipient"
+        },
+        "type": {
+          "type": "string",
+          "description": "the header type to use for the recipient, defaults to \"to\" if not provided",
+          "enum": [ "to", "cc", "bcc" ]
+        }
+      }
+    },
+    "RecipientMetadata": {
+      "type": "object",
+      "properties": {
+        "rcpt": {
+          "type": "string",
+          "description": "the email address of the recipient that the metadata is associated with"
+        },
+        "values": {
+          "type": "object",
+          "description": "an associated array containing the recipient's unique metadata. If a key exists in both the per-recipient metadata and the global metadata, the per-recipient metadata will be used."
+        }
+      }
+    },
+    "Message": {
+      "type": "object",
+      "properties": {
+        "html": {
+          "type": "string",
+          "description": "the full HTML content to be sent"
+        },
+        "text": {
+          "type": "string",
+          "description": "optional full text content to be sent"
+        },
+        "subject": {
+          "type": "string",
+          "description": "the message subject"
+        },
+        "from_email": {
+          "type": "string",
+          "description": "the sender email address"
+        },
+        "from_name": {
+          "type": "string",
+          "description": "optional from name to be used"
+        },
+        "to": {
+          "type": "array",
+          "description": "an array of recipient information",
+          "items": {
+            "$ref": "#/definitions/Recipient"
+          }
+        },
+        "headers": {
+          "type": "object",
+          "description": "optional extra headers to add to the message (most headers are allowed)"
+        },
+        "important": {
+          "type": "boolean",
+          "description": "whether or not this message is important, and should be delivered ahead of non-important messages"
+        },
+        "track_opens": {
+          "type": "boolean",
+          "description": "whether or not to turn on open tracking for the message"
+        },
+        "track_clicks": {
+          "type": "boolean",
+          "description": "whether or not to turn on click tracking for the message"
+        },
+        "auto_text": {
+          "type": "boolean",
+          "description": "whether or not to automatically generate a text part for messages that are not given text"
+        },
+        "auto_html": {
+          "type": "boolean",
+          "description": "whether or not to automatically generate an HTML part for messages that are not given HTML"
+        },
+        "inline_css": {
+          "type": "boolean",
+          "description": "whether or not to automatically inline all CSS styles provided in the message HTML - only for HTML documents less than 256KB in size"
+        },
+        "url_strip_qs": {
+          "type": "boolean",
+          "description": "whether or not to strip the query string from URLs when aggregating tracked URL data"
+        },
+        "preserve_recipients": {
+          "type": "boolean",
+          "description": "whether or not to expose all recipients in to \"To\" header for each email"
+        },
+        "view_content_link": {
+          "type": "boolean",
+          "description": "set to false to remove content logging for sensitive emails"
+        },
+        "bcc_address": {
+          "type": "string",
+          "description": "an optional address to receive an exact copy of each recipient's email"
+        },
+        "tracking_domain": {
+          "type": "string",
+          "description": "a custom domain to use for tracking opens and clicks instead of mandrillapp.com"
+        },
+        "signing_domain": {
+          "type": "string",
+          "description": "a custom domain to use for SPF/DKIM signing instead of mandrill (for \"via\" or \"on behalf of\" in email clients)"
+        },
+        "return_path_domain": {
+          "type": "string",
+          "description": "a custom domain to use for the messages's return-path"
+        },
+        "merge": {
+          "type": "boolean",
+          "description": "whether to evaluate merge tags in the message. Will automatically be set to true if either merge_vars or global_merge_vars are provided."
+        },
+        "merge_language": {
+          "type": "string",
+          "description": "the merge tag language to use when evaluating merge tags, either mailchimp or handlebars",
+          "enum": [
+            "mailchimp",
+            "handlebars"
+          ]
+        },
+        "global_merge_vars": {
+          "type": "array",
+          "description": "global merge variables to use for all recipients. You can override these per recipient.",
+          "items": {
+            "$ref": "#/definitions/Var"
+          }
+        },
+        "merge_vars": {
+          "type": "array",
+          "description": "per-recipient merge variables, which override global merge variables with the same name.",
+          "items": {
+            "$ref": "#/definitions/MergeVars"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "description": "an array of string to tag the message with. Stats are accumulated using tags, though we only store the first 100 we see, so this should not be unique or change frequently. Tags should be 50 characters or less. Any tags starting with an underscore are reserved for internal use and will cause errors.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "subaccount": {
+          "type": "string",
+          "description": "the unique id of a subaccount for this message - must already exist or will fail with an error"
+        },
+        "google_analytics_domains": {
+          "type": "array",
+          "description": "an array of strings indicating for which any matching URLs will automatically have Google Analytics parameters appended to their query string automatically.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "google_analytics_campaign": {
+          "type": "array",
+          "description": "optional string indicating the value to set for the utm_campaign tracking parameter. If this isn't provided the email's from address will be used instead.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "metadata": {
+          "type": "array",
+          "description": "metadata an associative array of user metadata. Mandrill will store this metadata and make it available for retrieval. In addition, you can select up to 10 metadata fields to index and make searchable using the Mandrill search api."
+        },
+        "recipient_metadata": {
+          "type": "array",
+          "description": "Per-recipient metadata that will override the global values specified in the metadata parameter.",
+          "items": {
+            "$ref": "#/definitions/RecipientMetadata"
+          }
+        },
+        "attachments": {
+          "type": "array",
+          "description": "an array of supported attachments to add to the message",
+          "items": {
+            "$ref": "#/definitions/Attachment"
+          }
+        },
+        "images": {
+          "type": "array",
+          "description": "an array of embedded images to add to the message",
+          "items": {
+            "$ref": "#/definitions/Attachment"
+          }
+        }
+      }
+    }
+  }
+}

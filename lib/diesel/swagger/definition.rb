@@ -11,7 +11,7 @@ module Diesel
 
       hash :properties
 
-      def initialize(id)
+      def initialize(id = "<Inline>")
         super()
         @id = id
       end

@@ -141,11 +141,31 @@ describe Diesel do
       Object.send(:remove_const, :Uber)
     end
 
-    it "should be able to support x-format extension" do
+    it "should be able to support x-format extension for apiKey" do
       VCR.use_cassette('uber_getProducts') do
         results = @client.get_products(latitude: 33.776776, longitude: -84.389683)
         expect(results.response.code).to eq "200"
         expect(results.parsed_response["products"].length).to eq 5
+      end
+    end
+  end
+
+  describe "Mandrill API" do
+    before do
+      Mandrill = load_api("mandrill")
+      @client = configure_client(Mandrill.new(
+        key: "test-api-key"
+      ))
+    end
+
+    after do
+      Object.send(:remove_const, :Mandrill)
+    end
+
+    it "should be able to support apiKey in JSON body" do
+      VCR.use_cassette('mandrill_userPing') do
+        result = @client.user_ping
+        expect(result.parsed_response).to eq "PONG!"
       end
     end
   end

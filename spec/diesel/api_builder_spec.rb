@@ -3,12 +3,18 @@ require 'diesel'
 
 describe Diesel::APIBuilder do
 
-  let(:specification) do
-    Diesel.parse_specification(File.join(File.dirname(__FILE__), '..', 'files', 'pivotal_tracker.json'))
+  def build_spec(name)
+    Diesel.parse_specification(File.join(File.dirname(__FILE__), '..', 'files', "#{name}.json"))
   end
 
   it "should build a API class from specification" do
-    api = Diesel::APIBuilder.new(specification).build
+    api = Diesel::APIBuilder.new(build_spec("pivotal_tracker")).build
+    expect(api).to_not be_nil
+  end
+
+  it "should build a API class from specification" do
+    api = Diesel::APIBuilder.new(build_spec("mandrill")).build
+    expect(api).to_not be_nil
   end
 
 end

@@ -96,4 +96,12 @@ describe Diesel::Swagger::Parser do
     op = specification.paths["/applications/{clientId}/tokens/{accessToken}"].get
     expect(op.security["basic"]).to_not be_nil
   end
+
+  it "should parse nested schema objects" do
+    specification = Diesel::Swagger::Parser.new.parse(load_spec('mandrill'))
+    op = specification.paths["/messages/send.json"].post
+    request_param = op.parameters.first
+    expect(specification.consumes).to include "application/json"
+    expect(request_param.schema.class).to eq Diesel::Swagger::Definition
+  end
 end

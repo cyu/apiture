@@ -6,6 +6,7 @@ require 'diesel/data_model'
 
 require 'diesel/middleware/debug'
 require 'diesel/middleware/set_header'
+require 'diesel/middleware/convert_json_body'
 
 module Diesel
   class APIBuilder
@@ -137,14 +138,23 @@ module Diesel
                   param_class = Diesel::Utils::Inflections.constantize(param_class_name)
                   middleware_opts = {name: parameter.name}
                   if parameter.schema?
-                    unless schema = data_models[parameter.schema]
-                      raise APIError, "Unspecified schema: #{parameter.schema}"
+                    schema = parameter.schema
+                    if schema.kind_of? String
+                      schema = data_models[parameter.schema]
+                    end
+                    unless schema
+                      raise APIError, "Unspecified schema: #{parameter.schema}; parameter=#{parameter.name}"
                     end
                     middleware_opts[:schema] = schema
                   end
                   use param_class, middleware_opts
                 end
 
+                if consumes = (operation.consumes || spec.consumes)
+                  if consumes.first == "application/json"
+                    use Diesel::Middleware::ConvertJSONBody
+                  end
+                end
               end
             end
           end

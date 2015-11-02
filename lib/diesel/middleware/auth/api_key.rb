@@ -18,6 +18,12 @@ module Diesel
             env[:request_headers][@name] = value
           elsif @in == :query
             env[:params][@name] = value
+          elsif @in == :body
+            env[:body] = if body = env[:body]
+              body.merge(@name => value)
+            else
+              { @name => value }
+            end
           end
           @app.call(env)
         end

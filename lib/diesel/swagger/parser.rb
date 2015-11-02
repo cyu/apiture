@@ -18,6 +18,7 @@ module Diesel
         specification.external_docs = build_node(ExternalDocs, json['externalDocs'])
         specification.schemes = json['schemes']
         specification.produces = json['produces'] || []
+        specification.consumes = json['consumes'] || []
         build_security_definition_hash(specification, json)
         build_security_hash(specification, json)
         specification.paths = build_node_hash(Path, json, 'paths') do |path, path_json|
@@ -25,7 +26,12 @@ module Diesel
             if op_json = path_json[method.to_s]
               op = build_node(Operation, op_json, constructor_args: [method])
               op.external_docs = build_node(ExternalDocs, op_json['externalDocs'])
-              op.parameters = build_node_list(Parameter, op_json, 'parameters')
+              op.parameters = build_node_list(Parameter, op_json, 'parameters') do |param, param_json|
+                if param_json["schema"] && param_json["schema"].kind_of?(Hash)
+                  schema_json = param_json["schema"]
+                  param.schema = build_node(Definition, schema_json)
+                end
+              end
               build_security_definition_hash(specification, json)
               build_security_hash(op, op_json)
               path.send("#{method}=".to_sym, op)
@@ -34,8 +40,8 @@ module Diesel
         end
         specification.definitions = build_node_hash(Definition, json, 'definitions') do |definition, def_json|
           definition.properties = build_node_hash(Property, def_json, 'properties') do |prop, prop_json|
-            prop.enum = prop_json['enum']
-            prop.items = prop_json['items']
+            prop.enum = prop_json["enum"]
+            prop.items = prop_json["items"]
           end
         end
         specification
