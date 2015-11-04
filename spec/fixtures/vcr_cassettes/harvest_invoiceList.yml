@@ -1,0 +1,85 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://fakedomain.harvestapp.com/invoices
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - diesel-rb/0.1.4
+      Accept:
+      - application/json
+      Authorization:
+      - Bearer faketoken 
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 04 Nov 2015 14:19:44 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Status:
+      - 200 OK
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Cache-Control:
+      - private, no-store, no-cache, max-age=0, must-revalidate
+      P3p:
+      - 'CP="Our privacy policy is available online: https://www.getharvest.com/services/privacy-policy"'
+      Content-Security-Policy:
+      - referrer origin-when-crossorigin
+      Content-Security-Policy-Report-Only:
+      - report-uri /csp_reports?authenticity_token=SFA%2FoMXIX0JQuAwnNhuaumd%2FRxxSAdFoVdI%2Bzc4Gbo4%3D;
+        default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval' cache.harvestapp.com
+        www.googletagmanager.com www.googleadservices.com platform.twitter.com *.google-analytics.com
+        www.google.com js-agent.newrelic.com *.nr-data.net js.appcenter.intuit.com
+        ajax.googleapis.com; style-src 'self' 'unsafe-inline' cache.harvestapp.com
+        www.google.com js.appcenter.intuit.com
+      Access-Control-Allow-Origin:
+      - http://localhost:4567/auth/swagger/callback
+      Access-Control-Expose-Headers:
+      - X-Served-From,X-Company-Version,X-Asked-With-Method
+      Access-Control-Allow-Headers:
+      - Content-Type,Accept
+      Access-Control-Max-Age:
+      - '1200'
+      X-Served-From:
+      - https://fakedomain.harvestapp.com/invoices
+      Set-Cookie:
+      - _harvest_sess=UXR4Q0E4Y3c2RDJaRlFTVzlEWTNLTGErRnlDOEFtcTMvZHZFSEordXJLc3BBOXptc045UTZXL3RGVUhVUWhuTGFRZktCOGhkbUxzZitTWTkzOG5aMXRNYmNWZGFBZmNrQisveGE0M01QRWRYa3F4d3o3Qkw3WklGVFk4NU9TM1ZVaDlZejZ2R252cG9MZWcxRjlZdFRyV1MwYnlRQ1Bod1dNSE5HK2FZVWlid0Q5RnlDK1BzODZtT3Z1OGJHNDBNeEVpSXVvRnFDeTRIQmcwSFNIcW9SK29ZaVdFZE8vemwzSmpHL1FaeHB5TT0tLXk2MWFyTGlnQlJoclp5bTlJZjdPK1E9PQ%3D%3D--fe2967ef94293551fbb2b2e61f42a2fde20add6e;
+        domain=harvestapp.com; path=/; expires=Thu, 19 Nov 2015 14:19:44 -0000; secure;
+        HttpOnly
+      X-Request-Id:
+      - 7b38e38c-1581-4edb-95ce-2471b8e976bf
+      X-Runtime:
+      - '0.183979'
+      X-Server:
+      - rails5
+      X-Lb:
+      - lb1
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: '[{"invoices":{"id":1,"client_id":123,"period_start":"2015-10-16","period_end":"2015-10-31","number":"60","issued_at":"2015-11-02","due_at":"2015-11-17","amount":20.0,"currency":"United
+        States Dollar - USD","state":"draft","notes":"","purchase_order":"","due_amount":20.0,"due_at_human_format":"net
+        15","created_at":"2015-11-03T02:27:53Z","updated_at":"2015-11-03T02:27:53Z","tax":null,"tax_amount":0.0,"subject":"","recurring_invoice_id":null,"tax2":null,"tax2_amount":0.0,"client_key":"abcd","estimate_id":null,"discount":null,"discount_amount":0.0,"retainer_id":null,"created_by_id":6,"project_id":null,"client_name":"Fake Client 1"}},{"invoices":{"id":2,"client_id":321,"period_start":"2015-10-16","period_end":"2015-10-31","number":"59","issued_at":"2015-11-02","due_at":"2015-11-17","amount":30.0,"currency":"United
+        States Dollar - USD","state":"open","notes":"","purchase_order":"","due_amount":30.0,"due_at_human_format":"net
+        15","created_at":"2015-11-03T02:26:47Z","updated_at":"2015-11-03T02:26:57Z","tax":null,"tax_amount":0.0,"subject":"","recurring_invoice_id":null,"tax2":null,"tax2_amount":0.0,"client_key":"abcd","estimate_id":null,"discount":null,"discount_amount":0.0,"retainer_id":null,"created_by_id":6,"project_id":null,"client_name":"Fake Client 2"}}]'
+    http_version: 
+  recorded_at: Wed, 04 Nov 2015 14:19:44 GMT
+recorded_with: VCR 2.9.3

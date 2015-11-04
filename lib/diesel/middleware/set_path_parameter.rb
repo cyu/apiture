@@ -10,7 +10,8 @@ module Diesel
       end
 
       def apply_parameter_value(env, value)
-        env[:url] = env[:url].gsub(@regex, value.to_s)
+        uri = env[:url]
+        uri.resource_path = uri.resource_path.gsub(@regex, value.to_s)
       end
     end
   end

@@ -1,0 +1,75 @@
+{
+  "swagger": "2.0",
+
+  "info": {
+    "title": "Mandrill",
+    "version": "1.0"
+  },
+
+  "x-base-host": "harvestapp.com",
+
+  "basePath": "/",
+
+  "schemes": ["https"],
+
+  "produces": ["application/json", "application/xml"],
+
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "/oauth2/authorize",
+      "tokenUrl": "/oauth2/token",
+      "scopes": {}
+    }
+  },
+
+  "security": {
+    "oauth2": []
+  },
+
+  "paths": {
+    "/invoices": {
+      "get": {
+        "summary": "List invoices",
+        "operationId": "invoiceList",
+        "parameters": [{
+          "name": "page",
+          "type": "integer",
+          "in": "query"
+        },{
+          "name": "from",
+          "type": "string",
+          "in": "query",
+          "x-date-format": "%Y%m%d"
+        },{
+          "name": "to",
+          "type": "string",
+          "in": "query",
+          "x-date-format": "%Y%m%d"
+        },{
+          "name": "updated_since",
+          "type": "string",
+          "in": "query",
+          "x-date-format": "%Y-%m-%d %H:%M"
+        },{
+          "name": "status",
+          "type": "string",
+          "in": "query",
+          "enum": [
+            "open",
+            "partial",
+            "draft",
+            "paid",
+            "unpaid",
+            "pastdue"
+          ]
+        },{
+          "name": "client",
+          "type": "integer",
+          "in": "query"
+        }]
+      }
+    }
+  }
+}

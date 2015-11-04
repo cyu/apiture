@@ -154,7 +154,7 @@ describe Diesel do
     before do
       Mandrill = load_api("mandrill")
       @client = configure_client(Mandrill.new(
-        key: "test-api-key"
+        key: "fakekey"
       ))
     end
 
@@ -166,6 +166,28 @@ describe Diesel do
       VCR.use_cassette('mandrill_userPing') do
         result = @client.user_ping
         expect(result.parsed_response).to eq "PONG!"
+      end
+    end
+  end
+
+  describe "Harvest API" do
+    before do
+      Harvest = load_api("harvest")
+      @client = configure_client(Harvest.new(
+        subdomain: "fakedomain",
+        oauth2: {
+          token: "faketoken"
+        }))
+    end
+
+    after do
+      Object.send(:remove_const, :Harvest)
+    end
+
+    it "should be able to x-base-host extension" do
+      VCR.use_cassette('harvest_invoiceList') do
+        result = @client.invoice_list
+        expect(result.length).to eq 2
       end
     end
   end

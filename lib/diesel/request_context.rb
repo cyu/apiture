@@ -12,6 +12,10 @@ module Diesel
     end
 
     def perform
+      if endpoint.url.base_host
+        endpoint.url.subdomain = options[:subdomain]
+      end
+
       env = {
         method: endpoint.request_method,
         url: endpoint.url,
@@ -20,6 +24,7 @@ module Diesel
         logger: logger,
         context: self
       }
+
       endpoint.middleware_stack.call(env)
       perform_request(env)
     end
@@ -46,7 +51,8 @@ module Diesel
 
     protected
       def perform_request(env)
-        HTTParty.send(env[:method], env[:url],
+        HTTParty.send(env[:method],
+                      env[:url].to_s,
                       headers: env[:request_headers],
                       query: env[:params],
                       body: env[:body])

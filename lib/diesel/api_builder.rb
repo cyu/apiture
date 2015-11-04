@@ -3,6 +3,7 @@ require 'diesel/api_error'
 require 'diesel/utils/inflections'
 require 'diesel/api_base'
 require 'diesel/data_model'
+require 'diesel/uri'
 
 require 'diesel/middleware/debug'
 require 'diesel/middleware/set_header'
@@ -51,15 +52,13 @@ module Diesel
       end
 
       def build_endpoint_url(specification, path)
-        base_path     = specification.base_path.chomp('/')
-        resource_path = path.sub(/^([^\/])/, '/\1').chomp('/')
-        [
-          specification.schemes.first,
-          '://',
-          specification.host,
-          base_path,
-          resource_path
-        ].join('')
+        uri = Diesel::URI.new
+        uri.scheme = specification.schemes.first
+        uri.host = specification.host
+        uri.base_host = specification.extensions[:base_host]
+        uri.base_path = specification.base_path.chomp('/')
+        uri.resource_path = path.sub(/^([^\/])/, '/\1').chomp('/')
+        uri
       end
 
       def build_endpoints
@@ -73,15 +72,27 @@ module Diesel
 
             Diesel::Endpoint.new(endpoint_name, endpoint_url, method).tap do |endpoint|
               endpoint.config_middleware do
-                use Diesel::Middleware::Debug
+                consumes =
+                    (operation.consumes && operation.consumes.first) ||
+                    (spec.consumes && spec.consumes.first) 
 
-                use Diesel::Middleware::SetHeader, 'User-Agent' => "diesel-rb/#{Diesel::VERSION}"
-
-                if spec.produces.any?
-                  use Diesel::Middleware::SetHeader, 'Content-Type' => spec.produces.first
-                end
+                produces =
+                    (operation.produces && operation.produces.first) ||
+                    (spec.produces && spec.produces.first) 
 
                 security = operation.security || spec.security
+
+                use Diesel::Middleware::Debug
+                use Diesel::Middleware::SetHeader, 'User-Agent' => "diesel-rb/#{Diesel::VERSION}"
+
+                if consumes
+                  use Diesel::Middleware::SetHeader, 'Content-Type' => consumes
+                end
+
+                if produces
+                  use Diesel::Middleware::SetHeader, 'Accept' => produces
+                end
+
                 security_ids = if security && !security.empty?
                                  security.keys
                                else
@@ -150,10 +161,8 @@ module Diesel
                   use param_class, middleware_opts
                 end
 
-                if consumes = (operation.consumes || spec.consumes)
-                  if consumes.first == "application/json"
-                    use Diesel::Middleware::ConvertJSONBody
-                  end
+                if consumes == "application/json"
+                  use Diesel::Middleware::ConvertJSONBody
                 end
               end
             end
