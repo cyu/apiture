@@ -187,6 +187,21 @@ describe Diesel do
         expect(result.parsed_response).to eq "PONG!"
       end
     end
+
+    it "should be able to build request with apiKey and parameters in JSON body" do
+      VCR.use_cassette('mandrill_messageSend') do
+        result = @client.message_send(request: {
+          message: {
+            text: "testing",
+            subject: "testing",
+            from_email: "test@test.com",
+            to: [ { email: "test@example.com" } ]
+          }
+        })
+        expect(result.first["email"]).to eq "test@example.com"
+        expect(result.first["status"]).to eq "sent"
+      end
+    end
   end
 
   describe "Harvest API" do

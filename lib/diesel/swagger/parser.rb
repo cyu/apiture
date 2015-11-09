@@ -36,6 +36,7 @@ module Diesel
                 if param_json["schema"] && param_json["schema"].kind_of?(Hash)
                   schema_json = param_json["schema"]
                   param.schema = build_node(Definition, schema_json)
+                  build_schema_content(param.schema, schema_json)
                 end
               end
               build_security_definition_hash(specification, json)
@@ -45,15 +46,20 @@ module Diesel
           end
         end
         specification.definitions = build_node_hash(Definition, json, 'definitions') do |definition, def_json|
-          definition.properties = build_node_hash(Property, def_json, 'properties') do |prop, prop_json|
-            prop.enum = prop_json["enum"]
-            prop.items = prop_json["items"]
-          end
+          build_schema_content(definition, def_json)
         end
         specification
       end
 
       protected
+
+        def build_schema_content(definition, def_json)
+           definition.properties = build_node_hash(Property, def_json, 'properties') do |prop, prop_json|
+            prop.enum = prop_json["enum"]
+            prop.items = prop_json["items"]
+          end
+        end
+
         def build_security_hash(parent_node, json)
           sec_json = json['security']
           parent_node.security = (sec_json || {}).reduce({}) do |memo, (k,v)|

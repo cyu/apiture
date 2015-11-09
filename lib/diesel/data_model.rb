@@ -18,7 +18,7 @@ module Diesel
         m[name] = h[name] if h[name]; m
       end
 
-      MultiJson.dump(json)
+      json
     end
   end
 end

@@ -152,6 +152,8 @@ module Diesel
                     schema = parameter.schema
                     if schema.kind_of? String
                       schema = data_models[parameter.schema]
+                    else
+                      schema = DataModel.new(schema)
                     end
                     unless schema
                       raise APIError, "Unspecified schema: #{parameter.schema}; parameter=#{parameter.name}"

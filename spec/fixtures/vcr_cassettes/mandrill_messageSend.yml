@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: post
-    uri: https://mandrillapp.com/api/1.0/users/ping.json
+    uri: https://mandrillapp.com/api/1.0/messages/send.json
     body:
       encoding: UTF-8
-      string: '{"key":"fakekey"}'
+      string: '{"key":"fakekey","message":{"text":"testing","subject":"testing","from_email":"test@test.com","to":[{"email":"test@example.com"}]}}'
     headers:
       User-Agent:
       - diesel-rb/0.1.5
@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - nginx/1.8.0
       Date:
-      - Mon, 09 Nov 2015 13:40:08 GMT
+      - Mon, 09 Nov 2015 13:40:10 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -38,7 +38,7 @@ http_interactions:
       - 'false'
     body:
       encoding: UTF-8
-      string: '"PONG!"'
+      string: '[{"email":"test@example.com","status":"sent","_id":"46223c56391d4f31a8079aa69eb125aa","reject_reason":null}]'
     http_version: 
-  recorded_at: Mon, 09 Nov 2015 13:40:08 GMT
+  recorded_at: Mon, 09 Nov 2015 13:40:10 GMT
 recorded_with: VCR 2.9.3
