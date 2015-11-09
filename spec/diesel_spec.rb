@@ -184,7 +184,7 @@ describe Diesel do
       Object.send(:remove_const, :Harvest)
     end
 
-    it "should be able to x-base-host extension" do
+    it "should support x-base-host extension" do
       VCR.use_cassette('harvest_invoiceList') do
         result = @client.invoice_list
         expect(result.length).to eq 2

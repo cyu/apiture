@@ -1,4 +1,5 @@
 require 'multi_json'
+require 'yaml'
 require 'diesel/utils/inflections'
 require 'diesel/swagger/specification'
 
@@ -8,8 +9,13 @@ module Diesel
     class Parser
       include Diesel::Utils::Inflections
 
-      def parse(spec)
+      def parse_json(spec)
         build_specification(MultiJson.load(spec))
+      end
+      alias :parse, :parse_json
+
+      def parse_yaml(spec)
+        build_specification(YAML.load(spec))
       end
 
       def build_specification(json)
