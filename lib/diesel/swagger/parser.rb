@@ -12,7 +12,7 @@ module Diesel
       def parse_json(spec)
         build_specification(MultiJson.load(spec))
       end
-      alias :parse, :parse_json
+      alias :parse :parse_json
 
       def parse_yaml(spec)
         build_specification(YAML.load(spec))

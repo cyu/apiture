@@ -5,7 +5,11 @@ require 'diesel/api_builder'
 
 module Diesel
   def self.parse_specification(path)
-    Diesel::Swagger::Parser.new.parse(File.read(path))
+    if path.match(/\.yml$/)
+      Diesel::Swagger::Parser.new.parse_yaml(File.read(path))
+    else
+      Diesel::Swagger::Parser.new.parse_json(File.read(path))
+    end
   end
 
   def self.build_api(specification)

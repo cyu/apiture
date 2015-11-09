@@ -15,6 +15,25 @@ describe Diesel do
     Diesel.load_api(fn)
   end
 
+  describe do
+    let(:parser) { double("parser") }
+
+    before do
+      allow(File).to receive(:read)
+      expect(Diesel::Swagger::Parser).to receive(:new).and_return(parser)
+    end
+
+    it "should auto-detect whether it is parsing YAML file" do
+      expect(parser).to receive(:parse_yaml)
+      Diesel.parse_specification("foo.yml")
+    end
+
+    it "should auto-detect whether it is parsing JSON file" do
+      expect(parser).to receive(:parse_json)
+      Diesel.parse_specification("foo.json")
+    end
+  end
+
   describe "Pivotal Tracker API" do
     before do
       PivotalTracker = load_api('pivotal_tracker')
