@@ -163,7 +163,7 @@ module Diesel
                   use param_class, middleware_opts
                 end
 
-                if consumes == "application/json"
+                if consumes == "application/json" || (operation.parameters && operation.parameters.detect { |p| p.in == :body })
                   use Diesel::Middleware::ConvertJSONBody
                 end
               end
