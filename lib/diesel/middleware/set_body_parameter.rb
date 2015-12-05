@@ -10,6 +10,9 @@ module Diesel
           else
             value
           end
+          if env[:request_headers]["Content-Type"].nil?
+            env[:request_headers]["Content-Type"] = "application/json"
+          end
         end
       end
     end
