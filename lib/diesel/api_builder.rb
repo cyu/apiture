@@ -144,8 +144,8 @@ module Diesel
 
                 operation.parameters.each do |parameter|
                   param_class_path = "diesel/middleware/set_#{parameter.in}_parameter"
-                  require param_class_path
                   param_class_name = Diesel::Utils::Inflections.camelize(param_class_path)
+                  require param_class_path unless Object::const_defined?(param_class_name)
                   param_class = Diesel::Utils::Inflections.constantize(param_class_name)
                   middleware_opts = {name: parameter.name}
                   if parameter.schema?
@@ -159,6 +159,9 @@ module Diesel
                       raise APIError, "Unspecified schema: #{parameter.schema}; parameter=#{parameter.name}"
                     end
                     middleware_opts[:schema] = schema
+                  end
+                  if spec.extensions[:version_parameter] && spec.extensions[:version_parameter]["name"] == parameter.name
+                    middleware_opts[:default] = spec.extensions[:version_parameter]["version"]
                   end
                   use param_class, middleware_opts
                 end

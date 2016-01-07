@@ -6,10 +6,14 @@ module Diesel
         @app = app
         @name = options[:name]
         @schema = options[:schema]
+        @default = options[:default]
       end
 
       def call(env)
         value = find_parameter_value(env)
+        if value == nil && @default
+          value = @default
+        end
         apply_parameter_value(env, value)
         @app.call(env)
       end
