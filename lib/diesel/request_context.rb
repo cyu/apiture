@@ -12,13 +12,15 @@ module Diesel
     end
 
     def perform
-      if endpoint.url.base_host
-        endpoint.url.subdomain = options[:subdomain]
+      url = endpoint.url.dup
+
+      if url.base_host
+        url.subdomain = options[:subdomain]
       end
 
       env = {
         method: endpoint.request_method,
-        url: endpoint.url,
+        url: url,
         params: {},
         request_headers: {},
         logger: logger,
@@ -31,10 +33,6 @@ module Diesel
 
     def authenticator
       group.authenticator
-    end
-
-    def endpoint_url
-      endpoint.url
     end
 
     def logger
