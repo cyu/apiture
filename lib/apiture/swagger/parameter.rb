@@ -23,7 +23,10 @@ module Apiture
       end
 
       def validate
-        if type == :path && !required?
+        if self.in.nil?
+          errors << "in attribute is required"
+        end
+        if self.in == :path && !required?
           errors << "Path parameters must be defined as required"
         end
       end
