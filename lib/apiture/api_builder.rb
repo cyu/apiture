@@ -93,7 +93,7 @@ module Apiture
                   use Apiture::Middleware::SetHeader, 'Accept' => produces
                 end
 
-                security_ids = if security && !security.empty?
+                security_ids = if security
                                  security.keys
                                else
                                  if operation.security_definitions && !operation.security_definitions.empty?

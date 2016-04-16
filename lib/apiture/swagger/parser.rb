@@ -72,6 +72,8 @@ module Apiture
         end
 
         def build_security_hash(parent_node, json)
+          # leave security nil to defer security to parent. An empty hash means
+          # no security.
           if sec_json = json['security']
             parent_node.security = sec_json.reduce({}) do |memo, (k,v)|
               memo[k] = security = Security.new(k)
