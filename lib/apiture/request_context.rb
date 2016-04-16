@@ -86,7 +86,7 @@ module Apiture
           content_types.each do |type|
             content_type_mappings.each do |(parser, type_match)|
               if type.match(type_match)
-                conn.response(parser, content_type: type_match)
+                conn.response(parser, content_type: type_match, preserve_raw: true)
               end
             end
           end
