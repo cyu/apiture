@@ -6,6 +6,9 @@ require 'apiture/swagger/specification'
 
 module Apiture
   module Swagger
+
+    class ParseError < Exception; end
+
     class Parser
       include Apiture::Utils::Inflections
 
@@ -28,22 +31,30 @@ module Apiture
         build_security_definition_hash(specification, json)
         build_security_hash(specification, json)
         specification.paths = build_node_hash(Path, json, 'paths') do |path, path_json|
+          trace = [path.id]
           [:get, :put, :post, :delete, :options, :head, :patch].each do |method|
             if op_json = path_json[method.to_s]
-              op = build_node(Operation, op_json, constructor_args: [method])
-              op.external_docs = build_node(ExternalDocs, op_json['externalDocs'])
-              op.parameters = build_node_list(Parameter, op_json, 'parameters') do |param, param_json|
+              trace.unshift(method)
+              op = build_node(Operation, op_json, constructor_args: [method], trace: trace)
+              op.external_docs = build_node(ExternalDocs, op_json['externalDocs'], trace: trace)
+              op.parameters = build_node_list(Parameter, op_json, 'parameters', trace: trace) do |param, param_json|
+                trace.unshift(param_json["name"])
                 if param_json["schema"] && param_json["schema"].kind_of?(Hash)
+                  trace.unshift("schema")
                   schema_json = param_json["schema"]
-                  param.schema = build_node(Definition, schema_json)
+                  param.schema = build_node(Definition, schema_json, trace: trace)
                   build_schema_content(param.schema, schema_json)
+                  trace.shift
                 end
+                trace.shift
               end
               build_security_definition_hash(op, json)
               build_security_hash(op, op_json)
               path.send("#{method}=".to_sym, op)
+              trace.shift
             end
           end
+          trace.shift
         end
         specification.definitions = build_node_hash(Definition, json, 'definitions') do |definition, def_json|
           build_schema_content(definition, def_json)
@@ -86,6 +97,7 @@ module Apiture
             model_class.attribute_names.each do |att|
               model.send("#{att}=".to_sym, json[camelize(att.to_s, false)])
             end
+            assert_type json, Hash, "expecting object node", options[:trace]
             json.each_pair do |key, value|
               if key.match(/^x-/)
                 extension_name = underscore(key.sub(/^x-/, '')).to_sym
@@ -96,12 +108,20 @@ module Apiture
           end
         end
 
-        def build_node_list(model_class, json, json_list_key)
-          (json[json_list_key] || []).map do |node_json|
-            node = build_node(model_class, node_json)
-            yield(node, node_json) if block_given?
-            node
+        def build_node_list(model_class, json, json_list_key, options = {})
+          trace = options[:trace] || []
+          trace.unshift(json_list_key)
+          node_list = []
+          if json_list = json[json_list_key]
+            assert_type json_list, Array, "expecting list", trace
+            node_list = json_list.map do |node_json|
+              node = build_node(model_class, node_json, trace: trace)
+              yield(node, node_json) if block_given?
+              node
+            end
           end
+          trace.unshift
+          node_list
         end
 
         def build_node_hash(model_class, json, json_hash_key)
@@ -109,6 +129,15 @@ module Apiture
             m[k] = node = build_node(model_class, v, constructor_args: [k])
             yield(node, v) if block_given?
             m
+          end
+        end
+
+        def assert_type target, expected_type, message, trace
+          unless target.kind_of?(expected_type)
+            if trace
+              message = "[#{trace.reverse.join(" / ")}] - #{message}: #{target.class.name}"
+            end
+            raise ParseError, message
           end
         end
 
