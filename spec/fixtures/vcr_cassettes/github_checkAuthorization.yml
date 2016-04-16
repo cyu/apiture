@@ -2,15 +2,17 @@
 http_interactions:
 - request:
     method: get
-    uri: https://afakeclientid:afakeclientsecret@api.github.com/applications/afakeclientid/tokens/afakeaccesstoken
+    uri: https://afakeclientid:afakeclientsecret@api.github.com/applications/afakeclientid/tokens/afaketoken
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
       - apiture-rb/0.1.3
-      Content-Type:
-      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
   response:
     status:
       code: 200
@@ -19,53 +21,50 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Tue, 18 Aug 2015 02:56:24 GMT
+      - Sat, 16 Apr 2016 03:56:12 GMT
       Content-Type:
       - application/json; charset=utf-8
-      Content-Length:
-      - '1309'
+      Transfer-Encoding:
+      - chunked
       Status:
       - 200 OK
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '4999'
+      - '4995'
       X-Ratelimit-Reset:
-      - '1439870184'
+      - '1460780527'
       Cache-Control:
       - public, max-age=60, s-maxage=60
-      Etag:
-      - '"b01bb31a7fef3a65b8e2a9de29e0d677"'
       Vary:
       - Accept
       - Accept-Encoding
+      Etag:
+      - W/"fcf97fafc3a143f7521813244d11fa3b"
       X-Github-Media-Type:
-      - github.v3; format=json
-      X-Xss-Protection:
-      - 1; mode=block
-      X-Frame-Options:
-      - deny
-      Content-Security-Policy:
-      - default-src 'none'
-      Access-Control-Allow-Credentials:
-      - 'true'
+      - github.v3
       Access-Control-Expose-Headers:
       - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
         X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
       Access-Control-Allow-Origin:
       - "*"
-      X-Github-Request-Id:
-      - 49CF3EF9:5BAA:D3D5490:55D29ED8
+      Content-Security-Policy:
+      - default-src 'none'
       Strict-Transport-Security:
       - max-age=31536000; includeSubdomains; preload
       X-Content-Type-Options:
       - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
       X-Served-By:
-      - 2811da37fbdda4367181b328b22b2499
+      - bae57931a6fe678a3dffe9be8e7819c8
+      X-Github-Request-Id:
+      - AC00357F:1559F:FA3B3AE:5711B7DC
     body:
-      encoding: UTF-8
-      string: '{"id":19507702,"url":"https://api.github.com/authorizations/19507702","app":{"name":"IncomingHQ
-        (development)","url":"http://incominghq.com","client_id":"f085b1bcf0b7d2daca8d"},"token":"a19b557c75beed59278048da5acd20a17f77692e","hashed_token":"6a73d32e7c979ebe32e4617ca9f4960bb3442619ffe6d9ddc4b5436305e705be","token_last_eight":"7f77692e","note":null,"note_url":null,"created_at":"2015-06-26T12:29:59Z","updated_at":"2015-08-16T15:07:59Z","scopes":["read:org","repo:status"],"fingerprint":null,"user":{"login":"cyu","id":2431,"avatar_url":"https://avatars.githubusercontent.com/u/2431?v=3","gravatar_id":"","url":"https://api.github.com/users/cyu","html_url":"https://github.com/cyu","followers_url":"https://api.github.com/users/cyu/followers","following_url":"https://api.github.com/users/cyu/following{/other_user}","gists_url":"https://api.github.com/users/cyu/gists{/gist_id}","starred_url":"https://api.github.com/users/cyu/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/cyu/subscriptions","organizations_url":"https://api.github.com/users/cyu/orgs","repos_url":"https://api.github.com/users/cyu/repos","events_url":"https://api.github.com/users/cyu/events{/privacy}","received_events_url":"https://api.github.com/users/cyu/received_events","type":"User","site_admin":false}}'
+      encoding: ASCII-8BIT
+      string: '{"id":23378498,"url":"https://api.github.com/authorizations/23378498","app":{"name":"IncomingHQ","url":"http://incominghq.com","client_id":"afakeclientid"},"token":"afaketoken","hashed_token":"22289e4c0f521282ee035d6dc7cd4e265c3621d5baa0922a6bcd82fd52e2ea02","token_last_eight":"88ad08bc","note":null,"note_url":null,"created_at":"2015-10-18T14:18:18Z","updated_at":"2015-10-29T22:02:09Z","scopes":["repo"],"fingerprint":null,"user":{"login":"cyu","id":2431,"avatar_url":"https://avatars.githubusercontent.com/u/2431?v=3","gravatar_id":"","url":"https://api.github.com/users/cyu","html_url":"https://github.com/cyu","followers_url":"https://api.github.com/users/cyu/followers","following_url":"https://api.github.com/users/cyu/following{/other_user}","gists_url":"https://api.github.com/users/cyu/gists{/gist_id}","starred_url":"https://api.github.com/users/cyu/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/cyu/subscriptions","organizations_url":"https://api.github.com/users/cyu/orgs","repos_url":"https://api.github.com/users/cyu/repos","events_url":"https://api.github.com/users/cyu/events{/privacy}","received_events_url":"https://api.github.com/users/cyu/received_events","type":"User","site_admin":false}}'
     http_version: 
-  recorded_at: Tue, 18 Aug 2015 02:56:24 GMT
+  recorded_at: Sat, 16 Apr 2016 03:56:12 GMT
 recorded_with: VCR 2.9.3

@@ -52,9 +52,9 @@ describe Apiture do
             name: 'Testing Pivotal API',
             story_type: :chore
           })
-        expect(result['kind']).to eq 'story'
-        expect(result).to have_key('id')
-        expect(result.response.code).to eq "200"
+        expect(result.body['kind']).to eq 'story'
+        expect(result.body).to have_key('id')
+        expect(result.status).to eq 200
       end
     end
   end
@@ -72,8 +72,8 @@ describe Apiture do
     it "should be able to build a Honeybadger API client" do
       VCR.use_cassette('honeybadger') do
         results = @client.get_faults(project_id: 3167)
-        expect(results['results'].first).to have_key('project_id')
-        expect(results.response.code).to eq "200"
+        expect(results.body['results'].first).to have_key('project_id')
+        expect(results.status).to eq 200
       end
     end
   end
@@ -107,8 +107,8 @@ describe Apiture do
                                            }]
                                          }]
                                        })
-        expect(results.response.code).to eq "200"
-        expect(results.parsed_response).to eq "ok"
+        expect(results.status).to eq 200
+        expect(results.body).to eq "ok"
       end
     end
   end
@@ -132,8 +132,8 @@ describe Apiture do
     it "should be able to call a zero parameter operation" do
       VCR.use_cassette('github_getUser') do
         results = @client.get_user
-        expect(results.response.code).to eq "200"
-        expect(results.parsed_response['login']).to eq "cyu"
+        expect(results.status).to eq 200
+        expect(results.body['login']).to eq "cyu"
       end
     end
 
@@ -141,9 +141,9 @@ describe Apiture do
       VCR.use_cassette('github_checkAuthorization') do
         results = @client.check_authorization(
           client_id: "afakeclientid",
-          access_token: "afakeaccesstoken"
+          access_token: "afaketoken"
         )
-        expect(results.response.code).to eq "200"
+        expect(results.status).to eq 200
       end
     end
   end
@@ -163,8 +163,8 @@ describe Apiture do
     it "should be able to support x-format extension for apiKey" do
       VCR.use_cassette('uber_getProducts') do
         results = @client.get_products(latitude: 33.776776, longitude: -84.389683)
-        expect(results.response.code).to eq "200"
-        expect(results.parsed_response["products"].length).to eq 5
+        expect(results.status).to eq 200
+        expect(results.body["products"].length).to eq 5
       end
     end
   end
@@ -184,7 +184,7 @@ describe Apiture do
     it "should be able to support apiKey in JSON body" do
       VCR.use_cassette('mandrill_userPing') do
         result = @client.user_ping
-        expect(result.parsed_response).to eq "PONG!"
+        expect(result.body).to eq "PONG!"
       end
     end
 
@@ -197,7 +197,7 @@ describe Apiture do
             from_email: "test@test.com",
             to: [ { email: "test@example.com" } ]
           }
-        })
+        }).body
         expect(result.first["email"]).to eq "test@example.com"
         expect(result.first["status"]).to eq "sent"
       end
@@ -220,7 +220,7 @@ describe Apiture do
 
     it "should support x-base-host extension" do
       VCR.use_cassette('harvest_invoiceList') do
-        result = @client.invoice_list
+        result = @client.invoice_list.body
         expect(result.length).to eq 2
       end
     end

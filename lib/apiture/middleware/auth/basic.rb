@@ -11,13 +11,11 @@ module Apiture
         end
 
         def call(env)
-          context = env[:context]
-          auth_options = context.options[@id]
-          username = auth_options[:username]
-          password = auth_options[:password]
-          value = Base64.encode64([username, password].join(':'))
-          value.gsub!("\n", '')
-          env[:request_headers][AUTHORIZATION_HEADER] = "Basic #{value}"
+          auth_options = env[:context].options[@id]
+          env[:basic_auth] = {
+            username: auth_options[:username],
+            password: auth_options[:password]
+          }
           @app.call(env)
         end
 
