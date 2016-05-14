@@ -49,9 +49,10 @@ module Diesel
 
     protected
       def perform_request(env)
+        headers = env[:request_headers].reject { |_,v| v.nil? }
         HTTParty.send(env[:method],
                       env[:url].to_s,
-                      headers: env[:request_headers],
+                      headers: headers,
                       query: env[:params],
                       body: env[:body])
       end
