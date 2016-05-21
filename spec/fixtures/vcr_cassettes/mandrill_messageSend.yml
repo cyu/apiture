@@ -8,7 +8,7 @@ http_interactions:
       string: '{"key":"fakekey","message":{"text":"testing","subject":"testing","from_email":"test@test.com","to":[{"email":"test@example.com"}]}}'
     headers:
       User-Agent:
-      - diesel-rb/0.1.5
+      - apiture-rb/0.1.5
       Content-Type:
       - application/json
       Accept:

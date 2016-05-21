@@ -1,12 +1,12 @@
-# Diesel
+# Apiture Gem
 
-Create API Clients from Swagger specifications
+Create clients for REST APIs from their Swagger specification 
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'diesel-api-dsl'
+    gem 'apiture'
 
 And then execute:
 
@@ -14,12 +14,12 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install diesel
+    $ gem install apiture
 
 ## Usage
 
 ```ruby
-PivotalTracker = Diesel.load_path("pivotal_tracker.json")
+PivotalTracker = Apiture.load_api("pivotal_tracker.json")
 client = PivotalTracker.new(api_token: 'afaketoken')
 client.create_story(
   project_id: '1234567',

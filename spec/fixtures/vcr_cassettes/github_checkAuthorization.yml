@@ -8,7 +8,7 @@ http_interactions:
       string: ''
     headers:
       User-Agent:
-      - diesel-rb/0.1.3
+      - apiture-rb/0.1.3
       Content-Type:
       - application/json
   response:

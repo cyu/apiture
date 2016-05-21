@@ -8,7 +8,7 @@ http_interactions:
       string: ''
     headers:
       User-Agent:
-      - diesel-rb/0.1.4
+      - apiture-rb/0.1.4
       Accept:
       - application/json
       Authorization:

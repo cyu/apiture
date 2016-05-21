@@ -1,7 +1,7 @@
 require 'bundler/setup'
 Bundler.setup
 
-require 'diesel'
+require 'apiture'
 require 'vcr'
 require 'pry'
 
