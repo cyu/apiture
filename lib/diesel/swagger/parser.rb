@@ -39,7 +39,7 @@ module Diesel
                   build_schema_content(param.schema, schema_json)
                 end
               end
-              build_security_definition_hash(specification, json)
+              build_security_definition_hash(op, json)
               build_security_hash(op, op_json)
               path.send("#{method}=".to_sym, op)
             end
@@ -61,16 +61,19 @@ module Diesel
         end
 
         def build_security_hash(parent_node, json)
-          sec_json = json['security']
-          parent_node.security = (sec_json || {}).reduce({}) do |memo, (k,v)|
-            memo[k] = security = Security.new(k)
-            security.scopes = v
-            memo
+          if sec_json = json['security']
+            parent_node.security = sec_json.reduce({}) do |memo, (k,v)|
+              memo[k] = security = Security.new(k)
+              security.scopes = v
+              memo
+            end
           end
         end
 
         def build_security_definition_hash(parent_node, json)
-          parent_node.security_definitions = build_node_hash(SecurityDefinition, json, 'securityDefinitions')
+          if json['securityDefinitions']
+            parent_node.security_definitions = build_node_hash(SecurityDefinition, json, 'securityDefinitions')
+          end
         end
 
         def build_node(model_class, json, options = {})
