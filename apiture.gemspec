@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'apiture/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "arch"
+  spec.name          = "apiture"
   spec.version       = Apiture::VERSION
   spec.authors       = ["Calvin Yu"]
   spec.email         = ["me@sourcebender.com"]
