@@ -12,6 +12,12 @@ module Apiture
       end
     end
 
+    def merge_components(components)
+      components.each_pair do |name, val|
+        instance_variable_set("@#{name}", val)
+      end
+    end
+
     def to_s
       build_url
     end

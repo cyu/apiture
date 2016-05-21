@@ -28,6 +28,10 @@ module Apiture
         url.subdomain = options[:subdomain]
       end
 
+      if options[:url_options]
+        url.merge_components(options[:url_options])
+      end
+
       env = {
         method: endpoint.request_method,
         url: url,
