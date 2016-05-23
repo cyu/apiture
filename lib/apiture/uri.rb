@@ -2,8 +2,7 @@ module Apiture
   class URI
 
     components = [:scheme, :host, :base_host, :subdomain, :base_path, :resource_path]
-
-    attr_reader *components
+    components.each { |comp| attr_reader comp }
 
     components.each do |comp|
       define_method "#{comp}=".to_sym do |v|

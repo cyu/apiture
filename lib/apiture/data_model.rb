@@ -13,7 +13,7 @@ module Apiture
       h = context.get_attribute(parameter_name)
       return nil unless h
 
-      json = definition.properties.reduce({}) do |m, (name, property)|
+      json = definition.properties.reduce({}) do |m, (name, _)|
         name = name.to_sym
         m[name] = h[name] if h[name]; m
       end

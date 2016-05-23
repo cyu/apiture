@@ -6,7 +6,8 @@ end
 
 module Apiture
   class APIBase
-    attr_accessor :logger, :options
+    attr_accessor :options
+    attr_reader :logger
 
     def initialize(options = {})
       @options = options

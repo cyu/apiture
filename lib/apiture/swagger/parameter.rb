@@ -30,6 +30,7 @@ module Apiture
           errors << "Path parameters must be defined as required"
         end
       end
+
     end
   end
 end

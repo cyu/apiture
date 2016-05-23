@@ -5,11 +5,17 @@ module Apiture
     class Node
       include Apiture::Utils::Inflections
 
+      @attribute_names = nil
+      @list_names = nil
+      @hash_names = nil
+      @validates_children = nil
+
       class << self
         def inherited(base)
           base.instance_variable_set(:@attribute_names, attribute_names.dup)
           base.instance_variable_set(:@list_names, list_names.dup)
           base.instance_variable_set(:@hash_names, hash_names.dup)
+          base.instance_variable_set(:@validates_children, nil)
         end
 
         def attribute_names
@@ -27,15 +33,18 @@ module Apiture
         def attribute(name, options = {})
           name = name.to_sym
           (@attribute_names ||= []) << name
-          attr_accessor name
           if options[:type] == :boolean
+            attr_accessor name
             define_method("#{name}?".to_sym) do
               !!send(name)
             end
           elsif options[:symbolize]
+            attr_reader name
             define_method("#{name}=".to_sym) do |value|
               instance_variable_set("@#{name}".to_sym, value.nil? ? nil : value.to_sym)
             end
+          else
+            attr_accessor name
           end
           (@validates_children ||= []) << name if options[:validate]
         end
