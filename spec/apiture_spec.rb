@@ -11,7 +11,10 @@ describe Apiture do
   end
 
   def load_api(name)
-    fn = File.join(File.dirname(__FILE__), 'files', "#{name}.json")
+    unless name.index('.')
+      name += ".json"
+    end
+    fn = File.join(File.dirname(__FILE__), 'files', name)
     Apiture.load_api(fn)
   end
 
@@ -225,4 +228,24 @@ describe Apiture do
       end
     end
   end
+
+  describe "JSONPlaceholder API" do
+    before do
+      JSONPlaceholder = load_api("jsonplaceholder.yml")
+      @client = configure_client(JSONPlaceholder.new)
+    end
+
+    after do
+      Object.send(:remove_const, :JSONPlaceholder)
+    end
+
+    it "should support parameters in form" do
+      VCR.use_cassette("jsonplaceholder_createPost") do
+        resp = @client.create_post(title: "foo", body: "bar", user_id: 1)
+        expect(resp.status).to eq 201
+        expect(resp.body["id"]).to eq 101
+      end
+    end
+  end
+
 end

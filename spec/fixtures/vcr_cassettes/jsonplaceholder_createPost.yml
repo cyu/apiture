@@ -1,0 +1,59 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://jsonplaceholder.typicode.com/posts?body=bar&title=foo&userId=1
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      User-Agent:
+      - apiture-rb/0.2.1
+      Accept:
+      - application/json
+      Content-Length:
+      - '0'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Server:
+      - Cowboy
+      Connection:
+      - keep-alive
+      X-Powered-By:
+      - Express
+      Vary:
+      - Origin, X-HTTP-Method-Override, Accept-Encoding
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Cache-Control:
+      - no-cache
+      Pragma:
+      - no-cache
+      Expires:
+      - "-1"
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '15'
+      Etag:
+      - W/"f-Je9hRGS1lnrngFIuH64GAA"
+      Date:
+      - Sat, 11 Jun 2016 14:55:02 GMT
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "id": 101
+        }
+    http_version: 
+  recorded_at: Sat, 11 Jun 2016 14:55:02 GMT
+recorded_with: VCR 2.9.3

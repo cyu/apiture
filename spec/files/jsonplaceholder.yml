@@ -1,0 +1,30 @@
+---
+swagger: "2.0"
+info:
+  title: JSONPlaceholder
+  description: Test API
+  version: "1"
+host: jsonplaceholder.typicode.com
+basePath: "/"
+schemes:
+  - http
+produces:
+  - application/json
+paths:
+  /posts:
+    post:
+      summary: Create a post
+      operationId: createPost
+      parameters:
+        - name: title
+          in: form
+          required: true
+          type: string
+        - name: body
+          in: form
+          required: true
+          type: string
+        - name: userId
+          in: form
+          required: true
+          type: integer
