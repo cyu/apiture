@@ -13,7 +13,7 @@ module Apiture
       end
 
       def serializable_hash
-        scopes || []
+        { id => scopes || [] }
       end
 
     end

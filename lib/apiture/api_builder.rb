@@ -80,8 +80,6 @@ module Apiture
                     (operation.produces && operation.produces.first) ||
                     (spec.produces && spec.produces.first) 
 
-                security = operation.security || spec.security
-
                 use Apiture::Middleware::Debug
                 use Apiture::Middleware::SetHeader, 'User-Agent' => "apiture-rb/#{Apiture::VERSION}"
 
@@ -93,8 +91,9 @@ module Apiture
                   use Apiture::Middleware::SetHeader, 'Accept' => produces
                 end
 
+                security = operation.security || spec.security
                 security_ids = if security
-                                 security.keys
+                                 security.map(&:id)
                                else
                                  if operation.security_definitions && !operation.security_definitions.empty?
                                    [operation.security_definitions.keys.first]

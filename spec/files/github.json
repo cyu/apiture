@@ -48,9 +48,11 @@
     }
   },
 
-  "security": {
-    "oauth2": []
-  },
+  "security": [
+    {
+      "oauth2": []
+    }
+  ],
 
   "paths": {
     "/user": {
@@ -63,9 +65,11 @@
       "get": {
         "summary": "List email addresses for a user",
         "operationId": "getUserEmails",
-        "security": {
-          "basic": ["user:email"]
-        }
+        "security": [
+          {
+            "basic": ["user:email"]
+          }
+        ]
       }
     },
     "/user/repos": {
@@ -116,12 +120,14 @@
       "get": {
         "summary": "List organizations for the authenticated user",
         "operationId": "getUserOrgs",
-        "security": {
-          "oauth2": [
-            "user",
-            "read:org"
-          ]
-        }
+        "security": [
+          {
+            "oauth2": [
+              "user",
+              "read:org"
+            ]
+          }
+        ]
       }
     },
     "/orgs/{org}/repos": {
@@ -177,9 +183,11 @@
           "in": "path",
           "required": true
         }],
-        "security": {
-          "basic": []
-        }
+        "security": [
+          {
+            "basic": []
+          }
+        ]
       }
     }
   }

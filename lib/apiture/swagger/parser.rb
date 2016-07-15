@@ -29,7 +29,7 @@ module Apiture
         specification.produces = json['produces'] || []
         specification.consumes = json['consumes'] || []
         build_security_definition_hash(specification, json)
-        build_security_hash(specification, json)
+        build_security_node_list(specification, json)
         specification.paths = build_node_hash(Path, json, 'paths') do |path, path_json|
           trace = [path.id]
           [:get, :put, :post, :delete, :options, :head, :patch].each do |method|
@@ -49,7 +49,7 @@ module Apiture
                 trace.shift
               end
               build_security_definition_hash(op, json)
-              build_security_hash(op, op_json)
+              build_security_node_list(op, op_json)
               path.send("#{method}=".to_sym, op)
               trace.shift
             end
@@ -71,14 +71,15 @@ module Apiture
           end
         end
 
-        def build_security_hash(parent_node, json)
+        def build_security_node_list(parent_node, json)
           # leave security nil to defer security to parent. An empty hash means
           # no security.
           if sec_json = json['security']
-            parent_node.security = sec_json.reduce({}) do |memo, (k,v)|
-              memo[k] = security = Security.new(k)
-              security.scopes = v
-              memo
+            parent_node.security = sec_json.map do |h|
+              security_id = h.keys.first
+              security = Security.new(security_id)
+              security.scopes = h[security_id]
+              security
             end
           end
         end

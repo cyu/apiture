@@ -23,9 +23,11 @@
     }
   },
 
-  "security": {
-    "key": []
-  },
+  "security": [
+    {
+      "key": []
+    }
+  ],
 
   "paths": {
     "/users/info.json": {

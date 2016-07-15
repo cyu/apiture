@@ -19,9 +19,9 @@ module Apiture
       list :parameters, validate: true
       list :responses, validate: true
       list :schemes
+      list :security, validate: true
 
       hash :security_definitions, validate: true
-      hash :security, validate: true
 
       def initialize(id)
         super()

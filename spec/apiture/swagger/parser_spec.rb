@@ -26,7 +26,7 @@ describe Apiture::Swagger::Parser do
     expect(api_token.in).to eq :header
     expect(api_token.name).to eq "X-TrackerToken"
 
-    security = specification.security['apiToken']
+    security = specification.security.detect { |sec| sec.id == 'apiToken' }
     expect(security).to_not be_nil
 
     expect(specification.produces).to include "application/json"
@@ -94,7 +94,7 @@ describe Apiture::Swagger::Parser do
   it "should parse a swagger specification with operation specific security" do
     specification = Apiture::Swagger::Parser.new.parse(load_spec('github'))
     op = specification.paths["/applications/{clientId}/tokens/{accessToken}"].get
-    expect(op.security["basic"]).to_not be_nil
+    expect(op.security.detect { |sec| sec.id == 'basic' }).to_not be_nil
   end
 
   it "should parse nested schema objects" do

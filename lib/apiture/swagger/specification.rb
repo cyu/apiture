@@ -19,13 +19,13 @@ module Apiture
       list :consumes
       list :produces
       list :tags, validate: true
+      list :security, validate: true
 
       hash :paths, validate: true
       hash :definitions, validate: true
       hash :parameters, validate: true
       hash :responses, validate: true
       hash :security_definitions, validate: true
-      hash :security, validate: true
     end
   end
 end

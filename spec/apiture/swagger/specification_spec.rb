@@ -8,12 +8,13 @@ describe Apiture::Swagger::Specification do
 
     security = Apiture::Swagger::Security.new('oauth')
     security.scopes = ['email']
-    spec.security = { 'oauth' => security }
+    spec.security = [security]
 
-    hash = spec.serializable_hash
-    security_hash = hash['security'] 
-    expect(security_hash).to_not be_nil
-    scopes = security_hash['oauth']
-    expect(scopes).to eq ['email']
+    h = spec.serializable_hash
+    security_list = h['security'] 
+    expect(security_list).to_not be_nil
+    security = security_list.detect { |sec| sec.keys.first == 'oauth' }
+    expect(security).to_not be_nil
+    expect(security['oauth']).to eq ['email']
   end
 end

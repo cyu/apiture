@@ -74,7 +74,9 @@
     }
   },
 
-  "security": {
-    "authToken": []
-  }
+  "security": [
+    {
+      "authToken": []
+    } 
+  ]
 }
