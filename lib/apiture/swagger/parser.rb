@@ -12,6 +12,11 @@ module Apiture
     class Parser
       include Apiture::Utils::Inflections
 
+      TYPE = 'type'.freeze
+      ARRAY = 'array'.freeze
+      DEFINITIONS = 'definitions'.freeze
+      REF = '$ref'.freeze
+
       def parse_json(spec)
         build_specification(MultiJson.load(spec))
       end
@@ -42,8 +47,7 @@ module Apiture
                 if param_json["schema"] && param_json["schema"].kind_of?(Hash)
                   trace.unshift("schema")
                   schema_json = param_json["schema"]
-                  param.schema = build_node(Definition, schema_json, trace: trace)
-                  build_schema_content(param.schema, schema_json)
+                  param.schema = build_definition_types(schema_json, "<Inline>", trace: trace)
                   trace.shift
                 end
                 trace.shift
@@ -56,18 +60,35 @@ module Apiture
           end
           trace.shift
         end
-        specification.definitions = build_node_hash(Definition, json, 'definitions') do |definition, def_json|
-          build_schema_content(definition, def_json)
+        specification.definitions = (json[DEFINITIONS] || {}).reduce({}) do |memo, (id, def_json)|
+          memo[id] = build_definition_types(def_json, id)
+          memo
         end
         specification
       end
 
       protected
 
-        def build_schema_content(definition, def_json)
-           definition.properties = build_node_hash(Property, def_json, 'properties') do |prop, prop_json|
-            prop.enum = prop_json["enum"]
-            prop.items = prop_json["items"]
+        def build_definition_types(def_json, id, options = {})
+          if definition_type = def_json[TYPE]
+            if definition_type == ARRAY
+              def_node = build_node(ArrayDefinition, def_json, constructor_args: [id], trace: options[:trace])
+              def_node.items = build_definition_types(def_json["items"], "<Inline>", options) if def_json["items"]
+              def_node
+            else
+              def_node = build_node(ObjectDefinition, def_json, constructor_args: [id], trace: options[:trace])
+              def_node.properties = build_node_hash(Property, def_json, 'properties') do |prop, prop_json|
+                prop.enum = prop_json["enum"]
+                if [:object, :array].include?(prop.type)
+                  prop.definition = build_definition_types(prop_json, "<Inline>", options)
+                end
+              end
+              def_node
+            end
+          elsif def_ref = def_json[REF]
+            DefinitionReference.new(def_ref)
+          else
+            def_json
           end
         end
 

@@ -2,7 +2,7 @@ require 'apiture/version'
 require 'apiture/api_error'
 require 'apiture/utils/inflections'
 require 'apiture/api_base'
-require 'apiture/data_model'
+require 'apiture/definition_value_renderer'
 require 'apiture/uri'
 
 require 'apiture/middleware/debug'
@@ -63,8 +63,7 @@ module Apiture
 
       def build_endpoints
         spec = specification
-        data_models = self.data_models
-
+        definitions = self.definition_renderers
         spec.paths.map do |path, path_model|
           path_model.operations_map.map do |(method, operation)|
             endpoint_name = underscore(operation.operation_id)
@@ -149,15 +148,16 @@ module Apiture
                   middleware_opts = {name: parameter.name}
                   if parameter.schema?
                     schema = parameter.schema
-                    if schema.kind_of? String
-                      schema = data_models[parameter.schema]
+                    renderer = nil
+                    if schema.kind_of? Swagger::DefinitionReference
+                      renderer = definitions[schema.definitionId]
+                      unless renderer
+                        raise APIError, "Unspecified schema: #{parameter.schema}; parameter=#{parameter.name}"
+                      end
                     else
-                      schema = DataModel.new(schema)
+                      renderer = DefinitionValueRenderer.new(schema, definitions)
                     end
-                    unless schema
-                      raise APIError, "Unspecified schema: #{parameter.schema}; parameter=#{parameter.name}"
-                    end
-                    middleware_opts[:schema] = schema
+                    middleware_opts[:renderer] = renderer
                   end
                   if spec.extensions[:version_parameter] && spec.extensions[:version_parameter]["name"] == parameter.name
                     middleware_opts[:default] = spec.extensions[:version_parameter]["version"]
@@ -174,15 +174,17 @@ module Apiture
         end.flatten.compact
       end
 
-      def data_models
-        @data_models ||= build_data_models
+      def definition_renderers
+        @definition_renderers ||= build_definition_renderers
       end
 
-      def build_data_models
-        specification.definitions.reduce({}) do |m, (name, definition)|
-          m[name] = DataModel.new(definition)
+      def build_definition_renderers
+        definitions = {}
+        specification.definitions.reduce(definitions) do |m, (name, definition)|
+          m[name] = DefinitionValueRenderer.new(definition, definitions)
           m
         end
+        definitions
       end
 
       def create_class_name(name)

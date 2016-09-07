@@ -3,12 +3,13 @@ require 'apiture/swagger/property'
 
 module Apiture
   module Swagger
-    class Definition < Node
+    class ObjectDefinition < Node
       attr_reader :id
 
       attribute :required
       attribute :discriminator
 
+      hash :items
       hash :properties
 
       def initialize(id = "<Inline>")

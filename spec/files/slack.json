@@ -31,7 +31,9 @@
             "name": "payload",
             "in": "body",
             "required": true,
-            "schema": "Payload"
+            "schema": {
+              "$ref": "#/definitions/Payload"
+            }
           }
         ]
       }

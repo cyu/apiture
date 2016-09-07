@@ -5,7 +5,7 @@ module Apiture
       def initialize(app, options)
         @app = app
         @name = options[:name]
-        @schema = options[:schema]
+        @renderer = options[:renderer]
         @default = options[:default]
       end
 
@@ -21,8 +21,8 @@ module Apiture
       protected
 
         def find_parameter_value(env)
-          if @schema
-            @schema.build(@name, env)
+          if @renderer
+            @renderer.render_parameter(@name, env)
           else
             context = env[:context]
             context.get_attribute(@name)

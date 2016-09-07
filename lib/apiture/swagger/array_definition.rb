@@ -1,17 +1,17 @@
-require 'apiture/swagger/data_type_field'
+require 'apiture/swagger/node'
 
 module Apiture
   module Swagger
-    class Property < DataTypeField
+    class ArrayDefinition < Node
       attr_reader :id
 
-      attribute :definition
+      attribute :items
 
       def initialize(id)
         super()
         @id = id
       end
-
     end
   end
 end
+

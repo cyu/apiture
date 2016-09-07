@@ -53,7 +53,8 @@ describe Apiture::Swagger::Parser do
     expect(param2.in).to eq :body
     expect(param2.name).to eq "story"
     expect(param2).to be_required
-    expect(param2.schema).to eq "NewStory"
+    expect(param2.schema).to be_kind_of Apiture::Swagger::DefinitionReference
+    expect(param2.schema.ref).to eq "#/definitions/NewStory"
 
     expect(specification.definitions.count).to eq 1
 
@@ -87,8 +88,8 @@ describe Apiture::Swagger::Parser do
 
     attachments_prop = payload.properties['attachments']
     expect(attachments_prop.type).to eq :array
-    expect(attachments_prop.items.count).to eq 1
-    expect(attachments_prop.items["$ref"]).to eq '#/definitions/Attachment'
+    expect(attachments_prop.definition).to be_kind_of Apiture::Swagger::ArrayDefinition
+    expect(attachments_prop.definition.items).to be_kind_of Apiture::Swagger::DefinitionReference
   end
 
   it "should parse a swagger specification with operation specific security" do
@@ -102,6 +103,7 @@ describe Apiture::Swagger::Parser do
     op = specification.paths["/messages/send.json"].post
     request_param = op.parameters.first
     expect(specification.consumes).to include "application/json"
-    expect(request_param.schema.class).to eq Apiture::Swagger::Definition
+    expect(request_param.schema.class).to eq Apiture::Swagger::ObjectDefinition
   end
+
 end

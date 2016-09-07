@@ -3,7 +3,9 @@ require 'apiture/swagger/external_docs'
 require 'apiture/swagger/security'
 require 'apiture/swagger/security_definition'
 require 'apiture/swagger/path'
-require 'apiture/swagger/definition'
+require 'apiture/swagger/object_definition'
+require 'apiture/swagger/array_definition'
+require 'apiture/swagger/definition_reference'
 # require 'apiture/swagger/response'
 
 module Apiture
