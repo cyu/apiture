@@ -67,6 +67,7 @@ module Apiture
         headers = env[:request_headers]
 
         conn = Faraday.new do |faraday|
+          faraday.request  :url_encoded
           faraday.adapter Faraday.default_adapter
           configure_format_handlers(faraday, headers)
         end
@@ -78,12 +79,16 @@ module Apiture
         conn.__send__(request_method) do |req|
           req.headers.merge!(headers) if headers
 
-          req.url env[:url].to_s
-
-          req.params = env[:params]
-
-          if body = env[:body]
-            req.body = body
+          if [:get, :head].include?(request_method)
+            req.url env[:url].to_s
+            req.params = env[:params]
+          else
+            req.url env[:url].to_s
+            if body = env[:body]
+              req.body = body
+            elsif !env[:params].empty?
+              req.body = env[:params]
+            end
           end
         end
       end
