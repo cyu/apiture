@@ -13,6 +13,11 @@ module Apiture
   class APIBuilder
     include Apiture::Utils::Inflections
 
+    ACCEPT = 'Accept'.freeze
+    CONTENT_TYPE = 'Content-Type'.freeze
+    CONTENT_TYPE_FORM_URLENCODED = 'application/x-www-form-urlencoded'.freeze
+    USER_AGENT = 'User-Agent'.freeze
+
     attr_reader :specification
 
     def initialize(specification)
@@ -80,14 +85,18 @@ module Apiture
                     (spec.produces && spec.produces.first) 
 
                 use Apiture::Middleware::Debug
-                use Apiture::Middleware::SetHeader, 'User-Agent' => "apiture-rb/#{Apiture::VERSION}"
+                use Apiture::Middleware::SetHeader, USER_AGENT => "apiture-rb/#{Apiture::VERSION}"
 
                 if consumes
-                  use Apiture::Middleware::SetHeader, 'Content-Type' => consumes
+                  use Apiture::Middleware::SetHeader, CONTENT_TYPE => consumes
+                else
+                  if operation.parameters && operation.parameters.detect { |p| p.in == :form }
+                    use Apiture::Middleware::SetHeader, CONTENT_TYPE => CONTENT_TYPE_FORM_URLENCODED
+                  end
                 end
 
                 if produces
-                  use Apiture::Middleware::SetHeader, 'Accept' => produces
+                  use Apiture::Middleware::SetHeader, ACCEPT => produces
                 end
 
                 security = operation.security || spec.security

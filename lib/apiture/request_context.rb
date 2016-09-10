@@ -76,8 +76,12 @@ module Apiture
         end
 
         conn.__send__(request_method) do |req|
-          req.url env[:url].to_s, env[:params]
           req.headers.merge!(headers) if headers
+
+          req.url env[:url].to_s
+
+          req.params = env[:params]
+
           if body = env[:body]
             req.body = body
           end
